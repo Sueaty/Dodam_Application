@@ -95,7 +95,7 @@ public class SettingsActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                showDialog(0);
+                createDialog(DATE_DIALOG_ID).show();
             }
         });
 
@@ -136,8 +136,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     };
 
-    @Override
-    protected Dialog onCreateDialog(int id){
+    protected Dialog createDialog(int id){
         if(id==DATE_DIALOG_ID){
             return new DatePickerDialog(this, dDateSetListener,tYear,tMonth, tDay);
         }
