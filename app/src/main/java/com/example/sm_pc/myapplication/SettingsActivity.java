@@ -27,7 +27,7 @@ import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
+    private FirebaseAuth auth, Auth;
     private Button dateButton, saveButton;
     private RadioButton boyButton, girlButton, undecidedButton;
     private TextView ddayText, babyName;
@@ -136,6 +136,7 @@ public class SettingsActivity extends AppCompatActivity {
             listView.setAdapter(adapter);
         }
     }
+
 
 
     private void updateDisplay() {
