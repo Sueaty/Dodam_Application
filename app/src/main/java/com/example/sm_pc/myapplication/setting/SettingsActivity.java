@@ -1,38 +1,32 @@
-package com.example.sm_pc.myapplication;
+package com.example.sm_pc.myapplication.setting;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.example.sm_pc.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth, Auth;
+    private FirebaseAuth auth;
     private Button dateButton, saveButton;
     private RadioButton boyButton, girlButton, undecidedButton;
     private TextView ddayText, babyName;
     private ListView listView;
-    private String userID;
+
     private static final String TAG = "SettingsActivity";
 
     private int tYear, tMonth, tDay;
@@ -57,20 +51,7 @@ public class SettingsActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-        userID = currentUser.getUid();
 
-
-        mRootRef.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                showData(dataSnapshot);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +76,6 @@ public class SettingsActivity extends AppCompatActivity {
 
 
         dateButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 createDialog(DATE_DIALOG_ID).show();
@@ -112,29 +92,6 @@ public class SettingsActivity extends AppCompatActivity {
         Calendar dCalendar = Calendar.getInstance();
         dCalendar.set(dYear, dMonth, dDay);
         updateDisplay();
-    }
-
-    private void showData(DataSnapshot dataSnapshot) {
-        for(DataSnapshot ds : dataSnapshot.getChildren()){
-            UserInformation uInfo = new UserInformation();
-            uInfo.setEmail(ds.child(userID).getValue(UserInformation.class).getEmail());
-            uInfo.setHeight(ds.child(userID).getValue(UserInformation.class).getHeight());
-            uInfo.setWeight(ds.child(userID).getValue(UserInformation.class).getWeight());
-            uInfo.setRegisterDate(ds.child(userID).getValue(UserInformation.class).getRegisterDate());
-
-            Log.d(TAG, uInfo.getEmail());
-            Log.d(TAG, uInfo.getHeight());
-            Log.d(TAG, uInfo.getWeight());
-            Log.d(TAG, uInfo.getRegisterDate());
-
-            ArrayList<String> array = new ArrayList<>();
-            array.add(uInfo.getEmail());
-            array.add(uInfo.getHeight());
-            array.add(uInfo.getWeight());
-            array.add(uInfo.getRegisterDate());
-            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array);
-            listView.setAdapter(adapter);
-        }
     }
 
 

@@ -6,6 +6,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ImageButton;
 
+import com.example.sm_pc.myapplication.setting.SettingsActivity;
+
 public class MainActivity extends AppCompatActivity {
 
     private ImageButton setting_btn;

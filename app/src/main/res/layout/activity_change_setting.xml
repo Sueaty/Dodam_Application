@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/beige"
-    tools:context="com.example.sm_pc.myapplication.ChangeSettingActivity">
+    tools:context="com.example.sm_pc.myapplication.setting.ChangeSettingActivity">
 
 
     <ImageView
@@ -46,7 +46,6 @@
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
         android:hint="@string/prompt_password"
-        android:imeActionId="@+id/login"
         android:imeOptions="actionUnspecified"
         android:inputType="textPassword"
         android:maxLines="1"
@@ -61,7 +60,6 @@
         android:layout_height="wrap_content"
         android:focusableInTouchMode="true"
         android:hint="@string/new_pass"
-        android:imeActionId="@+id/login"
         android:imeOptions="actionUnspecified"
         android:inputType="textPassword"
         android:maxLines="1"

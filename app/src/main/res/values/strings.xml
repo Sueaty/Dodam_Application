@@ -48,7 +48,7 @@
     <string name="textResetMsg">등록하실 때 기입한 이메일로\n비밀번호를 초기화할 수 있는 링크를 보내드리겠습니다.\n이메일을 적어주세요.</string>
     <string name="textImMom">나는 엄마</string>
     <string name="textImDad">나는 아빠</string>
-    <string name="textSetting">맞춤설정</string>
+    <string name="textSettingLoginInfo">로그인 정보</string>
     <string name="textBabyName">태아명을 입력해주세요</string>
     <string name="textBabyGender">아이 성별</string>
     <string name="textBoy">아들</string>

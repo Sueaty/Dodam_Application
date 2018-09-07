@@ -1,4 +1,4 @@
-package com.example.sm_pc.myapplication;
+package com.example.sm_pc.myapplication.setting;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -13,6 +13,7 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.account.SignupActivity;
 import com.google.android.gms.tasks.OnCompleteListener;

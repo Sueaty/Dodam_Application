@@ -112,9 +112,12 @@ public class SignupActivity extends AppCompatActivity {
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                DatabaseReference Setting = mRootRef.child("Setting");
-                                final DatabaseReference user = Setting.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                final DatabaseReference Setting = mRootRef.child("Setting");
+                                DatabaseReference user = Setting.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                                final DatabaseReference parent = user.child("parent");
                                 if (task.isSuccessful() && btnMom.isChecked()) {
+                                    String parentMom = "mom";
+                                    parent.setValue(parentMom);
                                     mUser muser = new mUser(
                                             registerDate,
                                             email,
@@ -138,6 +141,8 @@ public class SignupActivity extends AppCompatActivity {
                                     });
                                 }
                                 else if (task.isSuccessful() && btnDad.isChecked()){
+                                    String parentDad = "dad";
+                                    parent.setValue(parentDad);
                                     dUser duser = new dUser(
                                             registerDate,
                                             email

@@ -21,8 +21,8 @@
         <activity android:name=".account.SignupActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".account.ResetPasswordActivity" />
-        <activity android:name=".ChangeSettingActivity" />
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".setting.ChangeSettingActivity" />
+        <activity android:name=".setting.SettingsActivity"></activity>
     </application>
 
 </manifest>
