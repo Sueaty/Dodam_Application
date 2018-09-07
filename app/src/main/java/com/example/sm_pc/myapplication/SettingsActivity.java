@@ -5,7 +5,9 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ListView;
@@ -20,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
@@ -30,6 +33,7 @@ public class SettingsActivity extends AppCompatActivity {
     private TextView ddayText, babyName;
     private ListView listView;
     private String userID;
+    private static final String TAG = "SettingsActivity";
 
     private int tYear, tMonth, tDay;
     private int dYear = 1, dMonth = 1, dDay = 1;
@@ -54,10 +58,9 @@ public class SettingsActivity extends AppCompatActivity {
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
         userID = currentUser.getUid();
-        //????//
-        DatabaseReference Setting = mRootRef.child("Setting");
 
-        Setting.addValueEventListener(new ValueEventListener() {
+
+        mRootRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 showData(dataSnapshot);
@@ -113,7 +116,24 @@ public class SettingsActivity extends AppCompatActivity {
 
     private void showData(DataSnapshot dataSnapshot) {
         for(DataSnapshot ds : dataSnapshot.getChildren()){
+            UserInformation uInfo = new UserInformation();
+            uInfo.setEmail(ds.child(userID).getValue(UserInformation.class).getEmail());
+            uInfo.setHeight(ds.child(userID).getValue(UserInformation.class).getHeight());
+            uInfo.setWeight(ds.child(userID).getValue(UserInformation.class).getWeight());
+            uInfo.setRegisterDate(ds.child(userID).getValue(UserInformation.class).getRegisterDate());
 
+            Log.d(TAG, uInfo.getEmail());
+            Log.d(TAG, uInfo.getHeight());
+            Log.d(TAG, uInfo.getWeight());
+            Log.d(TAG, uInfo.getRegisterDate());
+
+            ArrayList<String> array = new ArrayList<>();
+            array.add(uInfo.getEmail());
+            array.add(uInfo.getHeight());
+            array.add(uInfo.getWeight());
+            array.add(uInfo.getRegisterDate());
+            ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1, array);
+            listView.setAdapter(adapter);
         }
     }
 
