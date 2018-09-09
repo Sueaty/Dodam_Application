@@ -4,16 +4,16 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.R;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -21,13 +21,9 @@ import java.util.Calendar;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private FirebaseAuth auth;
     private Button dateButton, saveButton;
     private RadioButton boyButton, girlButton, undecidedButton;
     private TextView ddayText, babyName;
-    private ListView listView;
-
-    private static final String TAG = "SettingsActivity";
 
     private int tYear, tMonth, tDay;
     private int dYear = 1, dMonth = 1, dDay = 1;
@@ -46,12 +42,8 @@ public class SettingsActivity extends AppCompatActivity {
         undecidedButton = (RadioButton) findViewById(R.id.buttonUndecided);
         ddayText = (TextView) findViewById(R.id.ddaydate);
         babyName = (TextView) findViewById(R.id.textBabyName);
-        listView = (ListView) findViewById(R.id.listView);
-
-        auth = FirebaseAuth.getInstance();
+        
         final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
-        FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser();
-
 
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,6 +53,10 @@ public class SettingsActivity extends AppCompatActivity {
                 final String genderB = "Boy";
                 final String genderG = "Girl";
                 final String genderU = "Undecided";
+                if (TextUtils.isEmpty(textBabyName) || TextUtils.isEmpty(ddaydate)){
+                    Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 DatabaseReference Baby = mRootRef.child("Baby");
                 DatabaseReference user = Baby.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 DatabaseReference name = user.child("name");
@@ -70,7 +66,7 @@ public class SettingsActivity extends AppCompatActivity {
                 DatabaseReference gender = user.child("gender");
                 if(boyButton.isChecked()){gender.setValue(genderB);}
                 else if(girlButton.isChecked()){gender.setValue(genderG);}
-                else if(undecidedButton.isChecked()){gender.setValue(genderU);}
+                else{gender.setValue(genderU);}
             }
         });
 
@@ -81,8 +77,6 @@ public class SettingsActivity extends AppCompatActivity {
                 createDialog(DATE_DIALOG_ID).show();
             }
         });
-
-
 
         Calendar calendar = Calendar.getInstance();
         tYear = calendar.get(Calendar.YEAR);
