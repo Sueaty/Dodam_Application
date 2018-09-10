@@ -57,6 +57,7 @@
     <string name="textBabyBirth">출산예정일</string>
     <string name="textAboutMom">엄마에 대하여</string>
     <string name="textAboutBaby">아기에 대하여</string>
+    <string name="textUserInfo">사용자 정보</string>
 
     <string name="title_activity_test">TestActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>

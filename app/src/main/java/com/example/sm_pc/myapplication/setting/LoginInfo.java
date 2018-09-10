@@ -2,8 +2,8 @@ package com.example.sm_pc.myapplication.setting;
 
 public class LoginInfo {
     //make the field name same with Firebase
-    private String email;
-    private String registerDate;
+    public String email;
+    public String registerDate;
 
     public String getEmail(){
         return email;
