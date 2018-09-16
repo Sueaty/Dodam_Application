@@ -9,24 +9,6 @@
     tools:context="com.example.sm_pc.myapplication.setting.ChangeSettingActivity">
 
 
-    <ImageView
-        android:id="@+id/ImageTwo"
-        android:layout_width="115dp"
-        android:layout_height="99dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignStart="@+id/ImageOne"
-        android:layout_marginBottom="132dp"
-        app:srcCompat="@drawable/two" />
-
-    <ImageView
-        android:id="@+id/ImageOne"
-        android:layout_width="135dp"
-        android:layout_height="264dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="167dp"
-        app:srcCompat="@drawable/one" />
-
     <EditText
         android:id="@+id/old_email"
         android:layout_width="368dp"

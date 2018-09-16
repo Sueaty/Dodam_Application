@@ -22,12 +22,14 @@ import java.util.Calendar;
 public class SettingsActivity extends AppCompatActivity {
 
     private Button dateButton, saveButton;
-    private RadioButton boyButton, girlButton, undecidedButton;
+    private RadioButton boyButton, girlButton;
     private TextView ddayText, babyName;
 
     private int tYear, tMonth, tDay;
     private int dYear = 1, dMonth = 1, dDay = 1;
     static final int DATE_DIALOG_ID = 0;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,12 +41,11 @@ public class SettingsActivity extends AppCompatActivity {
         saveButton = (Button) findViewById(R.id.saveButton);
         boyButton = (RadioButton) findViewById(R.id.buttonBoy);
         girlButton = (RadioButton) findViewById(R.id.buttonGirl);
-        undecidedButton = (RadioButton) findViewById(R.id.buttonUndecided);
         ddayText = (TextView) findViewById(R.id.ddaydate);
         babyName = (TextView) findViewById(R.id.textBabyName);
-        
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
 
+
+        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
         saveButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,11 +58,13 @@ public class SettingsActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
+
                 DatabaseReference Baby = mRootRef.child("Baby");
                 DatabaseReference user = Baby.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
                 DatabaseReference name = user.child("name");
-                name.setValue(textBabyName);
                 DatabaseReference date = user.child("date");
+
+                name.setValue(textBabyName);
                 date.setValue(ddaydate);
                 DatabaseReference gender = user.child("gender");
                 if(boyButton.isChecked()){gender.setValue(genderB);}
@@ -90,6 +93,7 @@ public class SettingsActivity extends AppCompatActivity {
 
 
 
+
     private void updateDisplay() {
         if(dYear == 1){ ddayText.setText("출산예정일");}
         else{ ddayText.setText(String.format("%d년 %d월 %d일", dYear, dMonth + 1, dDay));}
@@ -105,7 +109,6 @@ public class SettingsActivity extends AppCompatActivity {
             dCalendar.set(dYear, dMonth, dDay);
             updateDisplay();
         }
-
     };
 
     protected Dialog createDialog(int id){

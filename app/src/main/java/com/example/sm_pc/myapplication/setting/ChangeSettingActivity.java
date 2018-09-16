@@ -21,9 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-
 public class ChangeSettingActivity extends AppCompatActivity {
 
     private Button btnChangePassword, btnRemoveUser, changePassword, remove, signOut;
@@ -76,16 +73,19 @@ public class ChangeSettingActivity extends AppCompatActivity {
         remove.setVisibility(View.GONE);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
+        /*
         imageOne = (ImageView) findViewById(R.id.ImageOne);
         imageTwo = (ImageView) findViewById(R.id.ImageTwo);
         imageOne.setVisibility(View.VISIBLE);
         imageTwo.setVisibility(View.VISIBLE);
+        */
 
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
 
+        /*
         GregorianCalendar calendar = new GregorianCalendar();
         int min = calendar.get(Calendar.MINUTE);
         if(min == 9){
@@ -95,6 +95,7 @@ public class ChangeSettingActivity extends AppCompatActivity {
             imageOne.setVisibility(View.VISIBLE);
             imageTwo.setVisibility(View.GONE);
         }
+        */
 
 
 
@@ -102,12 +103,9 @@ public class ChangeSettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 oldEmail.setVisibility(View.GONE);
-
                 password.setVisibility(View.GONE);
                 newPassword.setVisibility(View.VISIBLE);
-
                 changePassword.setVisibility(View.VISIBLE);
-
                 remove.setVisibility(View.GONE);
             }
         });
@@ -176,13 +174,16 @@ public class ChangeSettingActivity extends AppCompatActivity {
         });
 
     }
+    @Override
+    public void onStart() {
+        super.onStart();
+        auth.addAuthStateListener(authListener);
+    }
+
 
     @SuppressLint("SetTextI18n")
     private void setDataToView(FirebaseUser user) {
-
         email.setText("User Email: " + user.getEmail());
-
-
     }
 
     // this listener will be called when there is change in firebase user session
@@ -201,23 +202,16 @@ public class ChangeSettingActivity extends AppCompatActivity {
 
             }
         }
-
-
     };
 
     //sign out method
     public void signOut() {
         auth.signOut();
-
-
-// this listener will be called when there is change in firebase user session
         FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
                     startActivity(new Intent(ChangeSettingActivity.this, LoginActivity.class));
                     finish();
                 }
@@ -229,12 +223,6 @@ public class ChangeSettingActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         progressBar.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-        auth.addAuthStateListener(authListener);
     }
 
     @Override
