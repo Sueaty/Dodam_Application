@@ -22,11 +22,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".account.ResetPasswordActivity" />
         <activity android:name=".setting.ChangeSettingActivity" />
-        <activity android:name=".setting.SettingsActivity" />
         <activity android:name=".setting.SettingActivity" />
-        <activity android:name=".setting.UserViewActivity" />
-        <activity android:name=".setting.CreateBaby.RegisterBabyActivity" />
-        <activity android:name=".setting.CreateBaby.CreateBabyActivity"></activity>
+        <activity android:name=".setting.Baby.BabyCreateActivity"></activity>
     </application>
 
 </manifest>

@@ -1,13 +1,15 @@
 package com.example.sm_pc.myapplication.setting;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
 import com.example.sm_pc.myapplication.R;
-import com.example.sm_pc.myapplication.setting.CreateBaby.RegisterBabyActivity;
+import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
 
 public class SettingActivity extends AppCompatActivity {
 
@@ -25,8 +27,19 @@ public class SettingActivity extends AppCompatActivity {
         buttonBaby.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Intent intent = new Intent(SettingActivity.this, RegisterBabyActivity.class);
-                startActivity(intent);
+                AlertDialog.Builder alert_confirm = new AlertDialog.Builder(SettingActivity.this);
+                alert_confirm.setMessage("아예 바꾸는거야 알겠지?");
+                alert_confirm.setNegativeButton("만들기", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(SettingActivity.this, BabyCreateActivity.class);
+                        startActivity(intent);
+                    }
+                });
+                alert_confirm.setPositiveButton("돌아가기", null);
+                AlertDialog alert = alert_confirm.create();
+                alert.show();
+
             }
 
         });
@@ -39,14 +52,15 @@ public class SettingActivity extends AppCompatActivity {
             }
 
         });
-
+/*
        buttonUser.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View v){
-               Intent intent = new Intent(SettingActivity.this, UserViewActivity.class);
+               Intent intent = new Intent(SettingActivity.this, ??.class);
                startActivity(intent);
            }
        });
+*/
     }
 }
 
