@@ -93,6 +93,8 @@ public class BabyCreateActivity extends AppCompatActivity {
                 if(editor.commit()){
                     Intent intent = new Intent(BabyCreateActivity.this, SettingActivity.class);
                     startActivity(intent);
+                }else{
+                    Toast.makeText(BabyCreateActivity.this, "fail", Toast.LENGTH_SHORT).show();
                 }
             }
         });

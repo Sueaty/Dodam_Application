@@ -8,21 +8,31 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
 
 public class SettingActivity extends AppCompatActivity {
 
-    private Button buttonBaby, buttonHow, buttonUser;
+    private Button buttonHome, buttonBaby, buttonHow, buttonUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
+        buttonHome = (Button) findViewById(R.id.buttonToHome);
         buttonBaby = (Button) findViewById(R.id.buttonRegisterBaby);
         buttonHow = (Button) findViewById(R.id.buttonHowTo);
         buttonUser = (Button) findViewById(R.id.buttonUserSetting);
+
+        buttonHome.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+        });
 
         buttonBaby.setOnClickListener(new View.OnClickListener(){
             @Override
