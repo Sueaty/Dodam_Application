@@ -16,12 +16,16 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.setting.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Calendar;
 
 public class BabyCreateActivity extends AppCompatActivity {
@@ -69,6 +73,7 @@ public class BabyCreateActivity extends AppCompatActivity {
                 final String genderB = "Boy";
                 final String genderG = "Girl";
                 final String genderU = "Undecided";
+
                 if (TextUtils.isEmpty(Name) || TextUtils.isEmpty(expectDate)){
                     Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
@@ -86,16 +91,37 @@ public class BabyCreateActivity extends AppCompatActivity {
                 else if(girl.isChecked()){gender.setValue(genderG);}
                 else{gender.setValue(genderU);}
 
-                SP_BABY_NAME = getSharedPreferences("BABY", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = SP_BABY_NAME.edit();
-                editor.putString("BABY_NAME", Name);
-                editor.putString("EXPECT_DATE", expectDate);
-                if(editor.commit()){
-                    Intent intent = new Intent(BabyCreateActivity.this, SettingActivity.class);
-                    startActivity(intent);
-                }else{
-                    Toast.makeText(BabyCreateActivity.this, "fail", Toast.LENGTH_SHORT).show();
+                String FILENAME = "BABY_NAME_FILE";
+                String FILEDATE = "BABY_DATE_FILE";
+                String BABY_NAME = Name;
+                String EXPECT_DATE = expectDate;
+
+                FileOutputStream nameFile = null;
+                FileOutputStream dateFile = null;
+
+                try {
+                    nameFile = openFileOutput(FILENAME, Context.MODE_PRIVATE);
+                    nameFile.write(BABY_NAME.getBytes());
+
+                    dateFile = openFileOutput(FILEDATE, Context.MODE_PRIVATE);
+                    dateFile.write(EXPECT_DATE.getBytes());
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } finally{
+                    if( (nameFile != null) && (dateFile != null)){
+                        try {
+                            nameFile.close();
+                            dateFile.close();
+                            Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
+
             }
         });
 
