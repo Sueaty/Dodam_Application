@@ -24,4 +24,10 @@
     <color name="beige">#E4DCCB</color>
     <color name="lightBlue">#A6C4BC</color>
     <color name="pink">#EFE1EA</color>
+
+
+
+
+    <color name="bg_bubble_self">#79d1bf</color>
+    <color name="bg_bubble_dodam">#efefef</color>
 </resources>

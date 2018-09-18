@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
+import com.example.sm_pc.myapplication.DodamBot.BotActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.setting.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
@@ -25,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textName,textDdate;
     private ImageButton buttonSetting;
-    private Button signOut;
+    private Button signOut, buttonDodam, buttonBaby;
     private FirebaseAuth auth;
 
 
@@ -39,7 +41,24 @@ public class MainActivity extends AppCompatActivity {
         auth = FirebaseAuth.getInstance();
         buttonSetting = (ImageButton) findViewById(R.id.buttonSetting);
         signOut = (Button) findViewById(R.id.logOut);
+        buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
+        buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
 
+        buttonDodam.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, BotActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        buttonBaby.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, BabyActivity.class);
+                startActivity(intent);
+            }
+        });
 
         String FILENAME = "BABY_NAME_FILE";
         String FILEDATE = "BABY_DATE_FILE";

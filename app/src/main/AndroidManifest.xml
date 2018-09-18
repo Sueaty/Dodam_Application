@@ -3,6 +3,11 @@
     package="com.example.sm_pc.myapplication">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <application
         android:allowBackup="true"
@@ -21,6 +26,8 @@
         <activity android:name=".account.SignupActivity" />
         <activity android:name=".MainActivity" />
         <activity android:name=".account.ResetPasswordActivity" />
+        <activity android:name=".DodamBot.BotActivity" />
+        <activity android:name=".BabyBot.BabyActivity" />
         <activity android:name=".setting.ChangeSettingActivity" />
         <activity android:name=".setting.SettingActivity" />
         <activity android:name=".setting.Baby.BabyCreateActivity"></activity>
