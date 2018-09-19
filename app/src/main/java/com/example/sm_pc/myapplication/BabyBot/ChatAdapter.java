@@ -50,7 +50,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public int getItemViewType(int position) {
         Message message = messageArrayList.get(position);
-        if (message.getId().equals("1")) {
+        if (message.getId().equals("1")) {//2를 1로 바꾸면 엄마 아가 말들의 위치가 서로 바뀌어서 나옴
             return SELF;
         }
 
