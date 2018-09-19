@@ -6,13 +6,16 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.MainActivity;
+import com.example.sm_pc.myapplication.diary.NewNoteActivity;
 import com.example.sm_pc.myapplication.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -36,6 +39,10 @@ public class DiaryMainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_diary_main);
 
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.diary_main_toolbar);
+        setSupportActionBar(myToolbar);
+
+
         mNotesList = (RecyclerView) findViewById(R.id.notes_list);
 
         gridLayoutManager = new GridLayoutManager(this, 2, GridLayoutManager.VERTICAL, false);
@@ -44,7 +51,7 @@ public class DiaryMainActivity extends AppCompatActivity {
         mNotesList.setLayoutManager(gridLayoutManager);
         //gridLayoutManager.setReverseLayout(true);
         //gridLayoutManager.setStackFromEnd(true);
-       mNotesList.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+       //mNotesList.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
 
         fAuth = FirebaseAuth.getInstance();
         if (fAuth.getCurrentUser() != null) {
@@ -140,14 +147,16 @@ public class DiaryMainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.main_new_note_btn:
+                Toast.makeText(this, "aaaa", Toast.LENGTH_SHORT).show();
                 Intent newIntent = new Intent(DiaryMainActivity.this, NewNoteActivity.class);
+                Toast.makeText(this, "bbbbbbb", Toast.LENGTH_SHORT).show();
                 startActivity(newIntent);
+                Toast.makeText(this, "ccccc", Toast.LENGTH_SHORT).show();
                 break;
         }
 
         return true;
     }
-
 
 
     /**
