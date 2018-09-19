@@ -12,7 +12,6 @@ import android.widget.TextView;
 import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
-import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
 import com.example.sm_pc.myapplication.setting.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     private TextView textName,textDdate;
     private ImageButton buttonSetting;
-    private Button signOut, buttonDodam, buttonBaby, buttonDiary;
+    private Button signOut, buttonDodam, buttonBaby;
     private FirebaseAuth auth;
 
 
@@ -44,8 +43,6 @@ public class MainActivity extends AppCompatActivity {
         signOut = (Button) findViewById(R.id.logOut);
         buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
         buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
-        buttonDiary = (Button) findViewById(R.id.buttonMainDiary);
-
 
         buttonDodam.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -59,14 +56,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(MainActivity.this, BabyActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        buttonDiary.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, DiaryMainActivity.class);
                 startActivity(intent);
             }
         });
