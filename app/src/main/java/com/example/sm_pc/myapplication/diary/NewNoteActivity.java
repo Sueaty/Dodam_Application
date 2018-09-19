@@ -37,7 +37,7 @@ public class NewNoteActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private DatabaseReference fNotesDatabase;
 
-    private String noteID;
+    private String noteID, id;
 
     private boolean isExist;
 
