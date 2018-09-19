@@ -30,6 +30,8 @@
         <activity android:name=".BabyBot.BabyActivity" />
         <activity android:name=".setting.ChangeSettingActivity" />
         <activity android:name=".setting.SettingActivity" />
+        <activity android:name=".diary.NewNoteActivity" />
+        <activity android:name=".diary.DiaryMainActivity" />
         <activity android:name=".setting.Baby.BabyCreateActivity"></activity>
     </application>
 
