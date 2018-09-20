@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".setting.UserInfoActivity"
+    android:orientation="vertical"
+    android:background="@color/beige" >
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="66dp"
+        android:gravity="center"
+        android:text="User Information"
+        android:textColor="@color/purple"
+        android:textSize="30sp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="로그인 되어 있는 사용자"
+        android:textSize="17sp"
+        android:layout_margin="15dp"/>
+    <TextView
+        android:id="@+id/textUserShowId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="asdf"
+        android:textSize="22sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight = "20sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="우리아기 태명"
+        android:textSize="17sp"
+        android:layout_margin="15dp" />
+    <TextView
+        android:id="@+id/textUserBabyName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="asdf"
+        android:textSize="22sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight = "20sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="우리아기 출산예정일"
+        android:textSize="17sp"
+        android:layout_margin="15dp" />
+    <TextView
+        android:id="@+id/textUserExpectedDate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="asdf"
+        android:textSize="22sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight = "20sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="우리아기 태어나기까지 남은 날"
+        android:textSize="17sp"
+        android:layout_margin="15dp" />
+    <TextView
+        android:id="@+id/textUserDdate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="asdf"
+        android:textSize="22sp"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight = "20sp"/>
+
+    <!--
+        병원 푸쉬 알림 받을 건지 물어봐야 하는데 어쩌야 하는지 모르겠다ㅠㅠ
+    -->
+
+    <Button
+        android:id="@+id/buttonLogOut"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="로그아웃" />
+
+    <Button
+        android:id="@+id/buttonChangePwd"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="비밀번호 변경" />
+
+    <Button
+        android:id="@+id/buttonQuitDodam"
+        android:layout_width="200dp"
+        android:layout_gravity="center"
+        android:layout_height="wrap_content"
+        android:text="탈퇴하기" />
+
+
+</LinearLayout>
