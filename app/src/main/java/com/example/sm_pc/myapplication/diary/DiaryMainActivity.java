@@ -105,15 +105,12 @@ public class DiaryMainActivity extends AppCompatActivity {
                                 }
                             });
                         }
-
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
-
             }
         };
         mNotesList.setAdapter(firebaseRecyclerAdapter);

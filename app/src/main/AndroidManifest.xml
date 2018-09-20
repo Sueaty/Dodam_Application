@@ -31,11 +31,12 @@
         <activity android:name=".setting.ChangeSettingActivity" />
         <activity android:name=".setting.SettingActivity" />
         <activity android:name=".diary.NewNoteActivity" />
-        <activity android:name=".diary.DiaryMainActivity"
-            android:screenOrientation="portrait"/>
-
-        <activity android:name=".setting.Baby.BabyCreateActivity"></activity>
-        <activity android:name=".setting.UserInfoActivity"></activity>
+        <activity
+            android:name=".diary.DiaryMainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".setting.Baby.BabyCreateActivity" />
+        <activity android:name=".setting.UserInfoActivity" />
+        <activity android:name=".Hospital.HospitalMainActivity"></activity>
     </application>
 
 </manifest>
