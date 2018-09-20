@@ -21,10 +21,10 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        buttonHome = (Button) findViewById(R.id.buttonToHome);
-        buttonBaby = (Button) findViewById(R.id.buttonRegisterBaby);
+        buttonHome = (Button) findViewById(R.id.buttonSettingMain);
+        buttonBaby = (Button) findViewById(R.id.buttonSettingBaby);
         buttonHow = (Button) findViewById(R.id.buttonHowTo);
-        buttonUser = (Button) findViewById(R.id.buttonUserSetting);
+        buttonUser = (Button) findViewById(R.id.buttonSettingUserChange);
 
         buttonHome.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -53,7 +53,7 @@ public class SettingActivity extends AppCompatActivity {
             }
 
         });
-
+/*
         buttonHow.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -62,15 +62,16 @@ public class SettingActivity extends AppCompatActivity {
             }
 
         });
-/*
-       buttonUser.setOnClickListener(new View.OnClickListener(){
-           @Override
-           public void onClick(View v){
-               Intent intent = new Intent(SettingActivity.this, ??.class);
-               startActivity(intent);
-           }
-       });
 */
+        buttonUser.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(SettingActivity.this, UserInfoActivity.class);
+                startActivity(intent);
+            }
+
+        });
+
     }
 }
 

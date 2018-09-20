@@ -13,8 +13,10 @@
         android:clickable="true"
         android:focusable="true"
         android:maxHeight="128dp"
-        android:minHeight="128dp"
-        app:contentPadding="5dp">
+        android:minHeight="128dp" >
+        <!--
+        app:contentPadding="5dp"
+        -->
 
         <LinearLayout
             android:layout_width="156dp"
