@@ -8,7 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -29,14 +28,13 @@ public class ChangeSettingActivity extends AppCompatActivity {
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
-    private ImageView imageOne, imageTwo;
+    // private ImageView imageOne, imageTwo;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        //get firebase auth instance
+        setContentView(R.layout.activity_change_setting);
         auth = FirebaseAuth.getInstance();
         email = (TextView) findViewById(R.id.useremail);
 
@@ -49,8 +47,6 @@ public class ChangeSettingActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser user = firebaseAuth.getCurrentUser();
                 if (user == null) {
-                    // user auth state is changed - user is null
-                    // launch login activity
                     startActivity(new Intent(ChangeSettingActivity.this, LoginActivity.class));
                     finish();
                 }

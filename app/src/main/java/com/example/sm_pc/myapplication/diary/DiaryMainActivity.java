@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.MainActivity;
-import com.example.sm_pc.myapplication.diary.NewNoteActivity;
 import com.example.sm_pc.myapplication.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.google.firebase.auth.FirebaseAuth;
@@ -61,6 +60,7 @@ public class DiaryMainActivity extends AppCompatActivity {
         updateUI();
 
         loadData();
+
     }
 
     @Override

@@ -35,6 +35,7 @@
             android:screenOrientation="portrait"/>
 
         <activity android:name=".setting.Baby.BabyCreateActivity"></activity>
+        <activity android:name=".setting.UserInfoActivity"></activity>
     </application>
 
 </manifest>
