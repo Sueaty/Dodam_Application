@@ -50,7 +50,7 @@ public class DiaryMainActivity extends AppCompatActivity {
         mNotesList.setLayoutManager(gridLayoutManager);
         //gridLayoutManager.setReverseLayout(true);
         //gridLayoutManager.setStackFromEnd(true);
-       //mNotesList.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
+       mNotesList.addItemDecoration(new GridSpacingItemDecoration(2, dpToPx(10), true));
 
         fAuth = FirebaseAuth.getInstance();
         if (fAuth.getCurrentUser() != null) {
@@ -144,11 +144,8 @@ public class DiaryMainActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.main_new_note_btn:
-                Toast.makeText(this, "aaaa", Toast.LENGTH_SHORT).show();
                 Intent newIntent = new Intent(DiaryMainActivity.this, NewNoteActivity.class);
-                Toast.makeText(this, "bbbbbbb", Toast.LENGTH_SHORT).show();
                 startActivity(newIntent);
-                Toast.makeText(this, "ccccc", Toast.LENGTH_SHORT).show();
                 break;
         }
 

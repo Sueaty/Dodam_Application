@@ -1,5 +1,6 @@
 package com.example.sm_pc.myapplication.diary;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -37,7 +39,7 @@ public class NewNoteActivity extends AppCompatActivity {
     private FirebaseAuth fAuth;
     private DatabaseReference fNotesDatabase;
 
-    private String noteID, id;
+    private String noteID;
 
     private boolean isExist;
 
@@ -49,6 +51,9 @@ public class NewNoteActivity extends AppCompatActivity {
 
         Toolbar myToolbar = (Toolbar) findViewById(R.id.diary_add_toolbar);
         setSupportActionBar(myToolbar);
+
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         try {
             noteID = getIntent().getStringExtra("noteId");
@@ -69,9 +74,6 @@ public class NewNoteActivity extends AppCompatActivity {
         btnCreate = (Button) findViewById(R.id.new_note_btn);
         etTitle = (EditText) findViewById(R.id.new_note_title);
         etContent = (EditText) findViewById(R.id.new_note_content);
-
-        getSupportActionBar().setDisplayShowHomeEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         fAuth = FirebaseAuth.getInstance();
@@ -139,7 +141,7 @@ public class NewNoteActivity extends AppCompatActivity {
 
                 fNotesDatabase.child(noteID).updateChildren(updateMap);
 
-                Toast.makeText(this, "Note updated0", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Note updated", Toast.LENGTH_SHORT).show();
             } else {
                 // CREATE A NEW NOTE
                 final DatabaseReference newNoteRef = fNotesDatabase.push();
@@ -169,7 +171,6 @@ public class NewNoteActivity extends AppCompatActivity {
             }
 
 
-
         } else {
             Toast.makeText(this, "USERS IS NOT SIGNED IN", Toast.LENGTH_SHORT).show();
         }
@@ -187,6 +188,9 @@ public class NewNoteActivity extends AppCompatActivity {
                 } else {
                     Toast.makeText(this, "Nothing to delete", Toast.LENGTH_SHORT).show();
                 }
+                break;
+            case android.R.id.home:
+                finish();
                 break;
         }
 
