@@ -10,18 +10,18 @@
         android:id="@+id/diary_main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="?attr/colorPrimary"
+        android:background="@color/orange"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/notes_list"
         android:layout_width="match_parent"
-        android:layout_height="580dp"
+        android:layout_height="504dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="79dp"></android.support.v7.widget.RecyclerView>
+        android:layout_marginTop="63dp"></android.support.v7.widget.RecyclerView>
 
 
 </RelativeLayout>

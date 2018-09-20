@@ -7,7 +7,7 @@
         android:id="@+id/new_note_delete_btn"
         android:icon="@drawable/ic_delete_white_24dp"
         android:title="Delete"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
 
 
 </menu>
