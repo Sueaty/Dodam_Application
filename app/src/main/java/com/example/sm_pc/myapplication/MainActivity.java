@@ -1,3 +1,4 @@
+
 package com.example.sm_pc.myapplication;
 
 import android.content.Intent;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        // 태명 & dDay 표시를 위해 저장된 internal storage 파일을 열고 TextView에 표시
+        // **====dDay 구현 아직 안됨 ==== 출산예정일까지 받아올 수 있음 ===**/
         String FILENAME = "BABY_NAME_FILE";
         String FILEDATE = "BABY_DATE_FILE";
         FileInputStream nameRead = null;
@@ -118,6 +121,8 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    // 로그아웃 하는 임시 표시.
+    // **==== 문제 : 로그아웃은 화면을 나갔다 와야 되어있음. 버튼 누름과 동시에 로그인 화면으로 가지 않음====**
     public void signOut() {
         auth.signOut();
         FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
