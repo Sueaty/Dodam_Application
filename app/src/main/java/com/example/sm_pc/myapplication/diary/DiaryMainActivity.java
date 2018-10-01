@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.format.DateFormat;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -24,6 +25,9 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
+import java.util.Locale;
 
 public class DiaryMainActivity extends AppCompatActivity {
 
@@ -88,13 +92,14 @@ public class DiaryMainActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         if (dataSnapshot.hasChild("title") && dataSnapshot.hasChild("timestamp")) {
                             String title = dataSnapshot.child("title").getValue().toString();
+                            String content = dataSnapshot.child("content").getValue().toString();
                             String timestamp = dataSnapshot.child("timestamp").getValue().toString();
 
                             viewHolder.setNoteTitle(title);
-                            //viewHolder.setNoteTime(timestamp);
+                            viewHolder.setNoteContent(content);
 
                             GetTimeAgo getTimeAgo = new GetTimeAgo();
-                            viewHolder.setNoteTime(getTimeAgo.getTimeAgo(Long.parseLong(timestamp), getApplicationContext()));
+                            viewHolder.setNoteTime(getTimeAgo.createDate(Long.parseLong(timestamp)).toString());
 
                             viewHolder.noteCard.setOnClickListener(new View.OnClickListener() {
                                 @Override
@@ -105,15 +110,12 @@ public class DiaryMainActivity extends AppCompatActivity {
                                 }
                             });
                         }
-
                     }
 
                     @Override
                     public void onCancelled(DatabaseError databaseError) {
-
                     }
                 });
-
             }
         };
         mNotesList.setAdapter(firebaseRecyclerAdapter);
