@@ -90,7 +90,7 @@ public class BabyActivity extends AppCompatActivity {
         this.inputMessage.setText("");
         mAdapter.notifyDataSetChanged();
         final String[][] BabyGrowthList = new String[40][3];
-        /*BabyGrowthList[0][0] = "저는 아직 수정란 상태에요! 지름 0.2cm 정도로 아주 작죠ㅎㅎ";
+        BabyGrowthList[0][0] = "저는 아직 수정란 상태에요! 지름 0.2cm 정도로 아주 작죠ㅎㅎ";
         BabyGrowthList[0][1] = "난자와 정자가 나팔관 내에서 만나 수정을 하면서 생명이 시작되었어요!!";
         BabyGrowthList[0][2] = "수정이 이루어진 후 12~15시간이 지나면 수정란이 세포분열을 하기 시작한대요!ㅎㅎ";
 
@@ -148,7 +148,7 @@ public class BabyActivity extends AppCompatActivity {
 
         BabyGrowthList[14][0] = "저는 자주 손가락을 움직이고 얼굴을 찡그려요>.<";
         BabyGrowthList[14][1] = "초음파로 남아인지 여아인지 구별이 가능하대요!ㅎㅎ 그리고 머리카락, 눈썹, 솜털 등 몸의 털이 자라기 시작했어요!";
-        BabyGrowthList[14][2] = "예전에 비해 미세한 부분의 움직임이 엄마한테 느껴질 수 있대요ㅎㅎ꼬물꼬물~";*/
+        BabyGrowthList[14][2] = "예전에 비해 미세한 부분의 움직임이 엄마한테 느껴질 수 있대요ㅎㅎ꼬물꼬물~";
 
         BabyGrowthList[15][0] = "저는 지금 어른 손바닥 정도의 크기에요!!";
         BabyGrowthList[15][1] = "저는 지금 활발하게 잘 움직이는 시기여서 머리를 흔들거나 손발을 움직여요~";
