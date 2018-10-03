@@ -73,10 +73,6 @@ public class SignupActivity extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if (password.length() < 5) {
-                    Toast.makeText(getApplicationContext(), "비밀번호는 5글자 이상으로 해주세요", Toast.LENGTH_SHORT).show();
-                    return;
-                }
 
                 progressBar.setVisibility(View.VISIBLE);
 
