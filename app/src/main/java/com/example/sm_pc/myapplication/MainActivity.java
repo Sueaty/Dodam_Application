@@ -3,12 +3,12 @@ package com.example.sm_pc.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
@@ -16,13 +16,10 @@ import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
 import com.example.sm_pc.myapplication.setting.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.text.DateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textName,textDdate;
     private ImageButton buttonSetting;
     private Button signOut, buttonDodam, buttonBaby, buttonDiary;
-    private FirebaseAuth auth;
+    private FirebaseAuth mAuth;
 
 
     @Override
@@ -38,9 +35,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
         textName = (TextView) findViewById(R.id.mainBabyName);
         textDdate = (TextView) findViewById(R.id.mainBabyDday);
-        auth = FirebaseAuth.getInstance();
         buttonSetting = (ImageButton) findViewById(R.id.buttonSetting);
         signOut = (Button) findViewById(R.id.logOut);
         buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
@@ -71,38 +68,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        // 태명 & dDay 표시를 위해 저장된 internal storage 파일을 열고 TextView에 표시
-        // **====dDay 구현 아직 안됨 ==== 출산예정일까지 받아올 수 있음 ===**/
-        String FILENAME = "BABY_NAME_FILE";
-        String FILEDATE = "BABY_DATE_FILE";
-        FileInputStream nameRead = null;
-        FileInputStream dateRead = null;
 
-        try {
-            String textNameRead, textExpectDateRead;
-            nameRead = openFileInput(FILENAME);
-            dateRead = openFileInput(FILEDATE);
-            InputStreamReader isr_name = new InputStreamReader(nameRead);
-            InputStreamReader isr_date = new InputStreamReader(dateRead);
-            BufferedReader br_name = new BufferedReader(isr_name);
-            BufferedReader br_date = new BufferedReader(isr_date);
-            StringBuilder sb_name = new StringBuilder();
-            StringBuilder sb_date = new StringBuilder();
-
-            while((textNameRead = br_name.readLine()) != null){
-                sb_name.append(textNameRead);
-            }
-            textName.setText(sb_name.toString());
-
-            while((textExpectDateRead = br_date.readLine()) != null){
-                sb_date.append(textExpectDateRead);
-            }
-            textDdate.setText(sb_date.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
 
         buttonSetting.setOnClickListener(new View.OnClickListener(){
@@ -116,25 +82,26 @@ public class MainActivity extends AppCompatActivity {
         signOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signOut();
+                mAuth.signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
 
-    // 로그아웃 하는 임시 표시.
-    // **==== 문제 : 로그아웃은 화면을 나갔다 와야 되어있음. 버튼 누름과 동시에 로그인 화면으로 가지 않음====**
-    public void signOut() {
-        auth.signOut();
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
-                    finish();
-                }
-            }
-        };
+    private void imageChange(){
+        Date date = new Date();
+        DateFormat df;
+
+        df = DateFormat.getTimeInstance(DateFormat.SHORT, Locale.KOREA);
+        String now = df.toString();
+        if(now == "오후 11:15"){
+
+        }
     }
+
+
 
 }

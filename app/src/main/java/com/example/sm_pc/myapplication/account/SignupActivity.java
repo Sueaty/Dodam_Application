@@ -13,7 +13,6 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
-import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -24,6 +23,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.HashMap;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -31,7 +31,9 @@ public class SignupActivity extends AppCompatActivity {
     private Button btnSignUp, btnFind;
     private RadioButton btnMom, btnDad;
     private ProgressBar progressBar;
-    private FirebaseAuth auth;
+
+    private FirebaseAuth mAuth;
+    private DatabaseReference mRootref;
 
 
     @Override
@@ -40,8 +42,8 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         //Get Firebase auth instance
-        auth = FirebaseAuth.getInstance();
-        final DatabaseReference mRootRef = FirebaseDatabase.getInstance().getReference();
+        mAuth = FirebaseAuth.getInstance();
+        mRootref = FirebaseDatabase.getInstance().getReference();
 
         inputEmail = (EditText) findViewById(R.id.email);
         inputPassword = (EditText) findViewById(R.id.password);
@@ -57,46 +59,17 @@ public class SignupActivity extends AppCompatActivity {
         momHeight.setVisibility(View.GONE);
         momWeight.setVisibility(View.GONE);
 
-
-
-        btnMom.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                btnFind.setVisibility(View.GONE);
-                momHeight.setVisibility(View.VISIBLE);
-                momWeight.setVisibility(View.VISIBLE);
-            }
-        });
-
-        btnDad.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                btnFind.setVisibility(View.VISIBLE);
-                momHeight.setVisibility(View.GONE);
-                momWeight.setVisibility(View.GONE);
-            }
-        });
-
+        ifMomChecked();
+        ifDadChecked();
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                Calendar calendar = Calendar.getInstance();
-                final String registerDate = DateFormat.getDateInstance().format(calendar.getTime());
                 final String email = inputEmail.getText().toString().trim();
-                final String password = inputPassword.getText().toString().trim();
-                final String textMomHeight = momHeight.getText().toString().trim();
-                final String textMomWeight = momWeight.getText().toString().trim();
+                String password = inputPassword.getText().toString().trim();
 
-
-                if(btnMom.isChecked()){
-                    if(TextUtils.isEmpty(textMomHeight) || TextUtils.isEmpty(textMomWeight)){
-                        Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                }
-                if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
+                if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
                     Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -108,69 +81,103 @@ public class SignupActivity extends AppCompatActivity {
                 progressBar.setVisibility(View.VISIBLE);
 
                 //create user
-                auth.createUserWithEmailAndPassword(email, password)
+                mAuth.createUserWithEmailAndPassword(email, password)
                         .addOnCompleteListener(SignupActivity.this, new OnCompleteListener<AuthResult>() {
                             @Override
                             public void onComplete(@NonNull Task<AuthResult> task) {
-                                final DatabaseReference Setting = mRootRef.child("Setting");
-                                DatabaseReference user = Setting.child(FirebaseAuth.getInstance().getCurrentUser().getUid());
-                                final DatabaseReference parent = user.child("parent");
-                                if (task.isSuccessful() && btnMom.isChecked()) {
-                                    String parentMom = "mom";
-                                    parent.setValue(parentMom);
-                                    mUser muser = new mUser(
-                                            registerDate,
-                                            email,
-                                            textMomHeight,
-                                            textMomWeight
-                                    );
 
-                                    user.setValue(muser).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<Void> task) {
-                                            if(task.isSuccessful()){
-                                                Toast.makeText(SignupActivity.this, "엄마 안녕?", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
-                                                startActivity(intent);
-                                                finish();
-                                            }else{
-                                                Toast.makeText(SignupActivity.this, "가입 오류!\n다시 시도해주세요!", Toast.LENGTH_SHORT).show();
-                                                return;
+                                Calendar calendar = Calendar.getInstance();
+                                String registerDate = DateFormat.getDateInstance().format(calendar.getTime());
+                                String userUID = mAuth.getCurrentUser().getUid();
+
+
+                                if (task.isSuccessful() && btnMom.isChecked()){
+
+                                    String textMomHeight = momHeight.getText().toString().trim();
+                                    String textMomWeight = momWeight.getText().toString().trim();
+
+                                    if(TextUtils.isEmpty(textMomHeight) || TextUtils.isEmpty(textMomWeight)){
+                                        Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
+
+                                    HashMap<String, String> momProfile = new HashMap<>();
+                                        momProfile.put("uid", userUID);
+                                        momProfile.put("Email", email);
+                                        momProfile.put("RegisterDate", registerDate);
+                                        momProfile.put("Height", textMomHeight);
+                                        momProfile.put("Weight", textMomWeight);
+
+                                        mRootref.child("Setting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+                                                    Toast.makeText(SignupActivity.this, "엄마 안녕?", Toast.LENGTH_SHORT).show();
+                                                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                                    startActivity(intent);
+                                                    finish();
+                                                } else{
+                                                    Toast.makeText(SignupActivity.this, "가입 오류!\n다시 시도해주세요!", Toast.LENGTH_SHORT).show();
+                                                    return;
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
                                 }
-                                else if (task.isSuccessful() && btnDad.isChecked()){
-                                    String parentDad = "dad";
-                                    parent.setValue(parentDad);
-                                    dUser duser = new dUser(
-                                            registerDate,
-                                            email
-                                    );
 
-                                    user.setValue(duser).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                else if (task.isSuccessful() && btnDad.isChecked()) {
+                                    HashMap<String, String> dadProfile = new HashMap<>();
+                                        dadProfile.put("uid", userUID);
+                                    dadProfile.put("Email", email);
+                                    dadProfile.put("RegisterDate", registerDate);
+
+                                    mRootref.child("Setting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
                                                 Toast.makeText(SignupActivity.this, "아빠 안녕?", Toast.LENGTH_SHORT).show();
-                                                Intent intent = new Intent(SignupActivity.this, MainActivity.class);
+                                                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                                 startActivity(intent);
                                                 finish();
-                                            }else{
+                                            } else{
                                                 Toast.makeText(SignupActivity.this, "가입 오류!\n다시 시도해주세요!", Toast.LENGTH_SHORT).show();
                                                 return;
                                             }
                                         }
                                     });
                                 }
+
                                 else{
                                     Toast.makeText(SignupActivity.this, "회원가입 오류" + task.getException(),Toast.LENGTH_SHORT).show();
                                 }
                             }
-                });
+                        });
             }
         });
     }
+
+    private void ifMomChecked() {
+        btnMom.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                btnFind.setVisibility(View.GONE);
+                momHeight.setVisibility(View.VISIBLE);
+                momWeight.setVisibility(View.VISIBLE);
+            }
+        });
+
+    }
+    private void ifDadChecked() {
+        btnDad.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                btnFind.setVisibility(View.VISIBLE);
+                momHeight.setVisibility(View.GONE);
+                momWeight.setVisibility(View.GONE);
+            }
+        });
+    }
+
+
 
     @Override
     protected void onResume() {
