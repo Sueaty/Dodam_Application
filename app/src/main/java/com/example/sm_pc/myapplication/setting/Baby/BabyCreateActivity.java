@@ -135,7 +135,7 @@ public class BabyCreateActivity extends AppCompatActivity {
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String userUID = mAuth.getCurrentUser().getUid();
+                final String userUID = mAuth.getCurrentUser().getUid();
                 String expectDate = dDayDate.getText().toString().trim();
                 String Name = babyName.getText().toString().trim();
                 String gender;
@@ -164,6 +164,7 @@ public class BabyCreateActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
+                            mRootref.child("Baby").child(userUID).child("dDayMills").setValue(d);
                             Toast.makeText(BabyCreateActivity.this, "Baby Information Updated", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
                             startActivity(intent);

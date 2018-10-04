@@ -82,7 +82,7 @@
         android:focusableInTouchMode="true"
         android:gravity="center"
         android:hint="@string/hintPassword"
-        android:inputType="textPassword|number"
+        android:inputType="textPassword"
         android:maxLines="1"
         android:textColorHint="@color/purple"
         app:layout_constraintBottom_toTopOf="@+id/sign_up_button"
