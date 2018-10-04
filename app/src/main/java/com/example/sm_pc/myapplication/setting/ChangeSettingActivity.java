@@ -23,12 +23,10 @@ import com.google.firebase.auth.FirebaseUser;
 public class ChangeSettingActivity extends AppCompatActivity {
 
     private Button btnChangePassword, btnRemoveUser, changePassword, remove, signOut;
-    private TextView email;
     private EditText oldEmail, password, newPassword;
     private ProgressBar progressBar;
     private FirebaseAuth auth;
 
-    // private ImageView imageOne, imageTwo;
 
 
     @Override
@@ -36,11 +34,9 @@ public class ChangeSettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_change_setting);
         auth = FirebaseAuth.getInstance();
-        email = (TextView) findViewById(R.id.useremail);
 
-        //get current user
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        setDataToView(user);
+
 
         authListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -69,29 +65,11 @@ public class ChangeSettingActivity extends AppCompatActivity {
         remove.setVisibility(View.GONE);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
 
-        /*
-        imageOne = (ImageView) findViewById(R.id.ImageOne);
-        imageTwo = (ImageView) findViewById(R.id.ImageTwo);
-        imageOne.setVisibility(View.VISIBLE);
-        imageTwo.setVisibility(View.VISIBLE);
-        */
 
 
         if (progressBar != null) {
             progressBar.setVisibility(View.GONE);
         }
-
-        /*
-        GregorianCalendar calendar = new GregorianCalendar();
-        int min = calendar.get(Calendar.MINUTE);
-        if(min == 9){
-            imageOne.setVisibility(View.GONE);
-            imageTwo.setVisibility(View.VISIBLE);
-        } else{
-            imageOne.setVisibility(View.VISIBLE);
-            imageTwo.setVisibility(View.GONE);
-        }
-        */
 
 
 
@@ -121,7 +99,7 @@ public class ChangeSettingActivity extends AppCompatActivity {
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
                                             Toast.makeText(ChangeSettingActivity.this, "Password is updated, sign in with new password!", Toast.LENGTH_SHORT).show();
-                                            signOut();
+                                            //signOut();
                                             progressBar.setVisibility(View.GONE);
                                         } else {
                                             Toast.makeText(ChangeSettingActivity.this, "Failed to update password!", Toast.LENGTH_SHORT).show();
@@ -143,31 +121,24 @@ public class ChangeSettingActivity extends AppCompatActivity {
             public void onClick(View v) {
                 progressBar.setVisibility(View.VISIBLE);
                 if (user != null) {
-                    user.delete()
-                            .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()) {
-                                        Toast.makeText(ChangeSettingActivity.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(ChangeSettingActivity.this, SignupActivity.class));
-                                        finish();
-                                        progressBar.setVisibility(View.GONE);
-                                    } else {
-                                        Toast.makeText(ChangeSettingActivity.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
-                                        progressBar.setVisibility(View.GONE);
-                                    }
-                                }
-                            });
+                    user.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(ChangeSettingActivity.this, "Your profile is deleted:( Create a account now!", Toast.LENGTH_SHORT).show();
+                                startActivity(new Intent(ChangeSettingActivity.this, SignupActivity.class));
+                                finish();
+                                progressBar.setVisibility(View.GONE);
+                            } else {
+                                Toast.makeText(ChangeSettingActivity.this, "Failed to delete your account!", Toast.LENGTH_SHORT).show();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        }
+                    });
                 }
             }
         });
 
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signOut();
-            }
-        });
 
     }
     @Override
@@ -177,10 +148,6 @@ public class ChangeSettingActivity extends AppCompatActivity {
     }
 
 
-    @SuppressLint("SetTextI18n")
-    private void setDataToView(FirebaseUser user) {
-        email.setText("User Email: " + user.getEmail());
-    }
 
     // this listener will be called when there is change in firebase user session
     FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
@@ -189,31 +156,14 @@ public class ChangeSettingActivity extends AppCompatActivity {
         public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
             FirebaseUser user = firebaseAuth.getCurrentUser();
             if (user == null) {
-                // user auth state is changed - user is null
-                // launch login activity
                 startActivity(new Intent(ChangeSettingActivity.this, LoginActivity.class));
                 finish();
             } else {
-                setDataToView(user);
+                // 바꿔질 메소드들 다시 부르기
 
             }
         }
     };
-
-    //sign out method
-    public void signOut() {
-        auth.signOut();
-        FirebaseAuth.AuthStateListener authListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                FirebaseUser user = firebaseAuth.getCurrentUser();
-                if (user == null) {
-                    startActivity(new Intent(ChangeSettingActivity.this, LoginActivity.class));
-                    finish();
-                }
-            }
-        };
-    }
 
     @Override
     protected void onResume() {

@@ -77,14 +77,9 @@ public class MainActivity extends AppCompatActivity {
                 if( (dataSnapshot.exists()) && (dataSnapshot.hasChild("Name")) && (dataSnapshot.hasChild("LeftDate")) ){
                     String getBabyName = dataSnapshot.child("Name").getValue().toString();
                     String getBabyDate = dataSnapshot.child("LeftDate").getValue().toString();
-                    int intBabyDate = Integer.parseInt(getBabyDate);
-                    if(intBabyDate >= 0){
-                        String putDate = "D-"+getBabyDate;
-                        textDdate.setText(putDate);
-                    } else{
-                        textDdate.setText("아이가 태어났어요!");
-                    }
+
                     textName.setText(getBabyName);
+                    textDdate.setText(getBabyDate);
 
                 }
                 else{ Toast.makeText(MainActivity.this, "Failed to Retrieve Data from Database", Toast.LENGTH_SHORT).show();
@@ -102,65 +97,18 @@ public class MainActivity extends AppCompatActivity {
         babyClick();
         diaryClick();
         settingClick();
-
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                finish();
-            }
-        });
-    }
-
-    public void dodamClick(){
-        buttonDodam.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, BotActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void babyClick(){
-        buttonBaby.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, BabyActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void diaryClick(){
-        buttonDiary.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, DiaryMainActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    public void settingClick(){
-        buttonSetting.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
-                startActivity(intent);
-            }
-        });
+        signOutClick();
     }
 
     public void updateTodaydate(){
         Calendar calendar = Calendar.getInstance();
-        int todayDay = calendar.get(Calendar.DAY_OF_MONTH);
-        int todayMonth = calendar.get(Calendar.MONTH);
-        int todayYear = calendar.get(Calendar.YEAR);
+        int todayDay, todayMonth, todayYear;
         String updateDate;
+
+        todayDay = calendar.get(Calendar.DAY_OF_MONTH);
+        todayMonth = calendar.get(Calendar.MONTH);
+        todayYear = calendar.get(Calendar.YEAR);
+
         if((todayMonth + 1)  < 10 && todayDay < 10){
             updateDate = String.format(Locale.getDefault(), "%d년" + 0 + "%d월" + 0 + "%d일", todayYear, todayMonth + 1, todayDay);
         } else if ( (todayMonth + 1)  < 10 ){
@@ -173,4 +121,56 @@ public class MainActivity extends AppCompatActivity {
         textToday.setText(updateDate);
     }
 
+    private void dodamClick(){
+        buttonDodam.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, BotActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void babyClick(){
+        buttonBaby.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, BabyActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void diaryClick(){
+        buttonDiary.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, DiaryMainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void settingClick(){
+        buttonSetting.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void signOutClick(){
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAuth.signOut();
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+                finish();
+            }
+        });
+    }
 }

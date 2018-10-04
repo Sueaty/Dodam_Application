@@ -23,8 +23,11 @@ import com.example.sm_pc.myapplication.setting.SettingActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -35,20 +38,17 @@ import java.util.Locale;
 
 public class BabyCreateActivity extends AppCompatActivity {
 
-    SharedPreferences SP_BABY_NAME;
     private EditText babyName;
     private TextView dDayDate, leftDate;
-    private RadioButton boy, girl;
+    private RadioButton boy, girl, undecided;
     private Button buttonDate, buttonSave, buttonReturn;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
 
     private int tYear, tMonth, tDay;
     private int dYear = 1, dMonth = 1, dDay = 1;
-
     private long d, t,r;
     public int resultNumber = 0;
-
     private static final int DATE_DIALOG_ID = 0;
 
 
@@ -65,11 +65,10 @@ public class BabyCreateActivity extends AppCompatActivity {
         leftDate = (TextView) findViewById(R.id.showLeftDate);
         boy = (RadioButton) findViewById(R.id.buttonBoy);
         girl = (RadioButton) findViewById(R.id.buttonGirl);
+        undecided = (RadioButton) findViewById(R.id.buttonUndecided);
         buttonDate = (Button) findViewById(R.id.buttonDate);
         buttonSave = (Button) findViewById(R.id.buttonSaveBaby);
         buttonReturn = (Button) findViewById(R.id.buttonReturnBaby);
-
-        returnClick();
 
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,12 +90,51 @@ public class BabyCreateActivity extends AppCompatActivity {
         r = (d - t) / (24 * 60 * 60 * 1000); // second -> minute
 
         resultNumber = (int) r + 1;
-        updateDisplay();
 
+        updateDisplay();
+        displayInformation();
+        saveInformation();
+        returnClick();
+
+    }
+
+    private void displayInformation(){
+        String userUID = mAuth.getCurrentUser().getUid();
+        mRootref.child("Baby").child(userUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    if (dataSnapshot.hasChild("Name")){
+                        String name = dataSnapshot.child("Name").getValue().toString();
+                        babyName.setText(name);
+                    } else
+                    if(dataSnapshot.hasChild("ExpectDate")){
+                        String expectDate = dataSnapshot.child("ExpectDate").getValue().toString();
+                        dDayDate.setText(expectDate);
+                    }
+                    if(dataSnapshot.hasChild("Gender")){
+                        String gender = dataSnapshot.child("Gender").getValue().toString();
+                        if(gender.equals("undecided")){undecided.setChecked(true);}
+                        else if (gender.equals("boy")) {boy.setChecked(true);}
+                        else {girl.setChecked(true);}
+                    }
+                    if (dataSnapshot.hasChild("LeftDate")){
+                        String left = dataSnapshot.child("LeftDate").getValue().toString();
+                        leftDate.setText(left);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    private void saveInformation(){
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 String userUID = mAuth.getCurrentUser().getUid();
                 String expectDate = dDayDate.getText().toString().trim();
                 String Name = babyName.getText().toString().trim();
@@ -105,9 +143,10 @@ public class BabyCreateActivity extends AppCompatActivity {
                 else if (girl.isChecked()){gender = "girl";}
                 else {gender = "undecided";}
                 String leftDate;
-                if(resultNumber >= 0) {leftDate = String.valueOf(resultNumber);}
+                if(resultNumber >= 0) {leftDate = "D - " + String.valueOf(resultNumber);}
                 else {
-                    leftDate ="아이가 태어났어요!";
+                    int absR = Math.abs(resultNumber);
+                    leftDate ="D + " + String.valueOf(absR);
                 }
 
                 if (TextUtils.isEmpty(Name) || TextUtils.isEmpty(expectDate)){
@@ -136,7 +175,6 @@ public class BabyCreateActivity extends AppCompatActivity {
                 });
             }
         });
-
     }
 
     private void updateDisplay() {
