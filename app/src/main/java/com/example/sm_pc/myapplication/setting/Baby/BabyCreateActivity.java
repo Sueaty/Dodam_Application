@@ -139,32 +139,35 @@ public class BabyCreateActivity extends AppCompatActivity {
                 String expectDate = dDayDate.getText().toString().trim();
                 String Name = babyName.getText().toString().trim();
                 String gender;
+                String leftDate;
+
+                // decide baby's gender (if not chosen, set them as 'undecided')
                 if(boy.isChecked()){gender = "boy";}
                 else if (girl.isChecked()){gender = "girl";}
                 else {gender = "undecided";}
-                String leftDate;
-                if(resultNumber >= 0) {leftDate = "D - " + String.valueOf(resultNumber);}
-                else {
-                    int absR = Math.abs(resultNumber);
-                    leftDate ="D + " + String.valueOf(absR);
-                }
 
+                // decide the input String according to left date
+                if(resultNumber >= 0) {leftDate = "D - " + String.valueOf(resultNumber);}
+                else { leftDate = "Born"; }
+
+                // Check if Name & Expect Date are all filled out
                 if (TextUtils.isEmpty(Name) || TextUtils.isEmpty(expectDate)){
                     Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
+                // Make a Hashmap
                 HashMap<String, String> babyMap = new HashMap<>();
                     babyMap.put("Name", Name);
                     babyMap.put("ExpectDate", expectDate);
                     babyMap.put("LeftDate", leftDate);
                     babyMap.put("Gender", gender);
 
+                // Input Data into Firebase Realtime Database
                 mRootref.child("Baby").child(userUID).setValue(babyMap).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
-                            mRootref.child("Baby").child(userUID).child("dDayMills").setValue(d);
                             Toast.makeText(BabyCreateActivity.this, "Baby Information Updated", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
                             startActivity(intent);
@@ -197,8 +200,7 @@ public class BabyCreateActivity extends AppCompatActivity {
         if (resultNumber >= 0) {
             leftDate.setText(String.format(Locale.getDefault(), "D - %d", resultNumber));
         } else {
-            int absR = Math.abs(resultNumber);
-            leftDate.setText(String.format(Locale.getDefault(), "D + %d", absR));
+            leftDate.setText(String.format(Locale.getDefault(), "Baby is already born"));
         }
     }
 

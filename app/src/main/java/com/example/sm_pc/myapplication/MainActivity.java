@@ -3,6 +3,7 @@ package com.example.sm_pc.myapplication;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -25,8 +26,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.type.DayOfWeek;
 
 import java.text.DateFormat;
+import java.time.Month;
+import java.time.Year;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -78,9 +82,8 @@ public class MainActivity extends AppCompatActivity {
                     String getBabyName = dataSnapshot.child("Name").getValue().toString();
                     String getBabyDate = dataSnapshot.child("LeftDate").getValue().toString();
 
-                    textName.setText(getBabyName);
                     textDdate.setText(getBabyDate);
-
+                    textName.setText(getBabyName);
                 }
                 else{ Toast.makeText(MainActivity.this, "Failed to Retrieve Data from Database", Toast.LENGTH_SHORT).show();
                 }
@@ -91,66 +94,38 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        updateTodaydate();
-
         dodamClick();
         babyClick();
         diaryClick();
         settingClick();
         signOutClick();
+
+        updateTodaydate();
     }
 
-    public void updateTodaydate(){
 
+    public void updateTodaydate(){
         Calendar calendar = Calendar.getInstance();
         int todayDay, todayMonth, todayYear;
-        final long todayMills;
-
         String updateDate;
-        String userUID = mAuth.getCurrentUser().getUid();
 
         todayDay = calendar.get(Calendar.DAY_OF_MONTH);
         todayMonth = calendar.get(Calendar.MONTH);
         todayYear = calendar.get(Calendar.YEAR);
-        todayMills = calendar.getTimeInMillis();
 
-        if((todayMonth + 1)  < 10 && todayDay < 10){
-            updateDate = String.format(Locale.getDefault(), "%d년" + 0 + "%d월" + 0 + "%d일", todayYear, todayMonth + 1, todayDay);
-        } else if ( (todayMonth + 1)  < 10 ){
-            updateDate = String.format(Locale.getDefault(), "%d년" + 0 + "%d월%d일", todayYear, todayMonth + 1, todayDay);
-        } else if ( todayDay < 10 ){
-            updateDate = String.format(Locale.getDefault(), "%d년%d월" + 0 + "%d일", todayYear, todayMonth + 1, todayDay);
-        } else{
-            updateDate = String.format(Locale.getDefault(), "%d년%d월%d일", todayYear, todayMonth + 1, todayDay);
-        }
-
-        mRootref.child("Baby").child(userUID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if( (dataSnapshot.exists()) && (dataSnapshot.hasChild("dDayMills"))){
-                    String userUID = mAuth.getCurrentUser().getUid();
-                    String leftDate;
-                    long dDayMills = (long) dataSnapshot.child("dDayMills").getValue();
-                    long r = (dDayMills - todayMills) / (24 * 60 * 60 * 1000);
-                    int resultNumber = (int) r + 1;
-                    if(resultNumber >= 0) {leftDate = "D - " + String.valueOf(resultNumber);}
-                    else {
-                        int absR = Math.abs(resultNumber);
-                        leftDate ="D + " + String.valueOf(absR);
-                    }
-                    mRootref.child("Baby").child(userUID).child("LeftDate").setValue(leftDate);
-                    textDdate.setText(leftDate);
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
+        if((todayMonth + 1)  < 10 && todayDay < 10)
+        { updateDate = String.format(Locale.getDefault(), "%d년" + 0 + "%d월" + 0 + "%d일", todayYear, todayMonth + 1, todayDay); }
+        else if ( (todayMonth + 1)  < 10 )
+        { updateDate = String.format(Locale.getDefault(), "%d년" + 0 + "%d월%d일", todayYear, todayMonth + 1, todayDay); }
+        else if ( todayDay < 10 )
+        { updateDate = String.format(Locale.getDefault(), "%d년%d월" + 0 + "%d일", todayYear, todayMonth + 1, todayDay); }
+        else
+        { updateDate = String.format(Locale.getDefault(), "%d년%d월%d일", todayYear, todayMonth + 1, todayDay); }
         textToday.setText(updateDate);
     }
 
+    // On CLICK ACTIVITIES //
+    //=======================================================================================================================================================//
     private void dodamClick(){
         buttonDodam.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -203,4 +178,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+    //=======================================================================================================================================================//
 }
