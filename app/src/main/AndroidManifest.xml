@@ -28,7 +28,6 @@
         <activity android:name=".account.ResetPasswordActivity" />
         <activity android:name=".DodamBot.BotActivity" />
         <activity android:name=".BabyBot.BabyActivity" />
-        <activity android:name=".setting.ChangeSettingActivity" />
         <activity android:name=".setting.SettingActivity" />
         <activity android:name=".diary.NewNoteActivity" />
         <activity
