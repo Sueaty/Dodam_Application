@@ -9,11 +9,12 @@
     tools:context="com.example.sm_pc.myapplication.MainActivity">
 
     <LinearLayout
+        android:id="@+id/linearLayout4"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
         android:layout_marginTop="10dp"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
@@ -25,9 +26,9 @@
             android:id="@+id/todayDate"
             android:layout_width="0dp"
             android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
             android:layout_weight="2"
             android:gravity="center"
-            android:layout_marginLeft="4dp"
             android:text="2018년10월07일"
             android:textColor="@color/purple"
             android:textSize="16sp" />
@@ -47,24 +48,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@android:color/transparent"
-            app:srcCompat="@drawable/icon_setting"/>
+            app:srcCompat="@drawable/icon_setting" />
 
     </LinearLayout>
 
 
     <ImageView
         android:id="@+id/babyImageView"
-        android:layout_width="290dp"
-        android:layout_height="290dp"
+        android:layout_width="276dp"
+        android:layout_height="271dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.39"
+        app:layout_constraintTop_toBottomOf="@+id/mainBabyName"
         app:srcCompat="@drawable/baby_eleven" />
 
 
@@ -87,82 +86,84 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.092" />
 
-    <Button
-        android:id="@+id/logOut"
-        android:layout_width="wrap_content"
+
+    <LinearLayout
+        android:id="@+id/linearLayout6"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="LogOut"
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.8"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.801" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
 
-    <Button
-        android:id="@+id/buttonMainDodam"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="72dp"
-        android:layout_marginTop="8dp"
-        android:text="dodam"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
+            android:layout_height="72dp"
+            android:layout_margin="3dp"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
 
-    <Button
-        android:id="@+id/buttonMainBaby"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Baby"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.066"
-        app:layout_constraintStart_toEndOf="@+id/buttonMainDodam"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+            <Button
+                android:id="@+id/buttonMainDodam"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_button_customize"
+                android:text="dodam"
+                android:textColor="@color/purple"
+                android:textSize="20sp" />
 
-    <Button
-        android:id="@+id/buttonMainDiary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Diary"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toEndOf="@+id/buttonMainBaby"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
+            <Button
+                android:id="@+id/buttonMainBaby"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_button_customize"
+                android:text="Baby"
+                android:textColor="@color/purple"
+                android:textSize="20sp" />
+        </LinearLayout>
 
-    <Button
-        android:id="@+id/buttonMainHospital"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="Hospital"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.277"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.779" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="3dp"
+            android:orientation="horizontal"
+            android:paddingLeft="15dp"
+            android:paddingRight="15dp">
+
+            <Button
+                android:id="@+id/buttonMainDiary"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_button_customize"
+                android:text="Diary"
+                android:textColor="@color/purple"
+                android:textSize="20sp" />
+
+            <Button
+                android:id="@+id/buttonMainHospital"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:layout_margin="3dp"
+                android:layout_weight="1"
+                android:background="@drawable/main_button_customize"
+                android:text="Hospital"
+                android:textColor="@color/purple"
+                android:textSize="20sp" />
+        </LinearLayout>
+
+
+    </LinearLayout>
+
 
 
 </android.support.constraint.ConstraintLayout>

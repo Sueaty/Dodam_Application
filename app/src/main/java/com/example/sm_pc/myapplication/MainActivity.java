@@ -36,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper myDb;
     private TextView textName,textDdate, textToday;
     private ImageButton buttonSetting;
-    private Button signOut, buttonDodam, buttonBaby, buttonDiary;
+    private Button buttonDodam, buttonBaby, buttonDiary;
     private ImageView babyPic;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
@@ -57,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
         babyClick();
         diaryClick();
         settingClick();
-        signOutClick();
     }
 
     private void define(){
@@ -68,7 +67,6 @@ public class MainActivity extends AppCompatActivity {
         textDdate = (TextView) findViewById(R.id.mainBabyDday);
         textToday = (TextView) findViewById(R.id.todayDate);
         buttonSetting = (ImageButton) findViewById(R.id.buttonSetting);
-        signOut = (Button) findViewById(R.id.logOut);
         buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
         buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
         buttonDiary = (Button) findViewById(R.id.buttonMainDiary);
@@ -219,19 +217,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 startActivity(intent);
-            }
-        });
-    }
-
-    private void signOutClick(){
-        signOut.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signOut();
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                Toast.makeText(MainActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
     }
