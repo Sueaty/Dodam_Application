@@ -1,5 +1,6 @@
 package com.example.sm_pc.myapplication.BabyBot;
 
+import android.support.annotation.NonNull;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -14,13 +15,35 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.R;
+import com.example.sm_pc.myapplication.model.ChatModel;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
+import com.google.firebase.database.DatabaseReference;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.example.sm_pc.myapplication.model.ChatModel;
+
+import com.example.sm_pc.myapplication.model.UserModel;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.Random;
 
@@ -28,20 +51,38 @@ public class BabyActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private ChatAdapter mAdapter;
-    private ArrayList messageArrayList;
+    //수정
+    private List<ChatModel.Comment> comments = new ArrayList<>();
+
+    //private ArrayList messageArrayList;
     private EditText inputMessage;
     private ImageButton btnSend;
     private Map<String,Object> context = new HashMap<>();
-    int a = 0;
     int dDay = 1;
 
+    //수정한 부분
+    private Map<String,UserModel> users = new HashMap<>();
 
+    private String uid;
+    private String destinatonUid;
+    private String babyUid;
+    private String w_answer;
+
+    public static String chatRoomUid;
+    //public static String RoomUid = "";
+
+    //private String babyGrowthMessage;
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby);
-
+        //수정한 부분2
+        uid = FirebaseAuth.getInstance().getCurrentUser().getUid();//채팅을 거는 아이디
+        babyUid = "Baby";
+        destinatonUid = "70Zg00IGY5ZmwjPSt9nfWo9Jfh03";
 
         inputMessage = (EditText) findViewById(R.id.message);
         //EditText 에 사용자가 입력한 메시지를 받아와서 inputMessage 에 저장!!!!!!
@@ -50,8 +91,11 @@ public class BabyActivity extends AppCompatActivity {
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
-        messageArrayList = new ArrayList<>();
-        mAdapter = new ChatAdapter(messageArrayList);
+        //messageArrayList = new ArrayList<>();
+        //수정
+        comments = new ArrayList<>();
+        mAdapter = new ChatAdapter(comments);
+        //mAdapter = new ChatAdapter(messageArrayList);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setStackFromEnd(true);
@@ -63,11 +107,85 @@ public class BabyActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if(checkInternetConnection()) {
+                    //ChatModel.Comment comment1 = new ChatModel.Comment();
+                    ChatModel chatModel = new ChatModel();
+                    ChatModel chatBaby = new ChatModel();
+
+                    chatModel.users.put(uid,true);  //true값을 가진 uid
+                    chatBaby.users.put(babyUid,true);
+
+
+
+                    //chatModel.users.put(destinatonUid,true);
+
+
+                    if(chatRoomUid == null){
+
+                        btnSend.setEnabled(false);
+                        //FirebaseDatabase.getInstance().getReference().child("chatrooms1").push().setValue(chatBaby);
+
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms1").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+                                checkChatRoom();
+                            }
+                        });
+
+                    }else {
+
+                        ChatModel.Comment comment = new ChatModel.Comment();
+                        comment.uid = uid;
+                        comment.message = inputMessage.getText().toString();
+                        //FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            @Override
+
+                            public void onComplete(@NonNull Task<Void> task) {
+                                inputMessage.setText("");
+                            }
+                        });
+
+                    }
                     sendMessage();
-                }
             }
+        }
+
+    }); //setOnClickListener
+    checkChatRoom();
+
+}
+    void  checkChatRoom(){
+
+        FirebaseDatabase.getInstance().getReference().child("chatrooms1").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                for(DataSnapshot item : dataSnapshot.getChildren()){
+
+                    ChatModel  chatModel = item.getValue(ChatModel.class);
+                    chatRoomUid = item.getKey();
+
+                    btnSend.setEnabled(true);
+
+                }
+
+
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
         });
-    };
+
+    }
+
+    public static String getRoomUid() {
+        return chatRoomUid;
+    }
 
     public int num() {
         int r;
@@ -82,11 +200,19 @@ public class BabyActivity extends AppCompatActivity {
     //왓슨에게 사용자가 입력한 내용 보내주는 부분
     private void sendMessage() {
         final String inputmessage = this.inputMessage.getText().toString().trim();
-        Message inputMessage = new Message();
-        inputMessage.setMessage(inputmessage);
+        //Message inputMessage = new Message();
+
+        //수정한 부분
+        ChatModel.Comment inputComment = new ChatModel.Comment();
+        inputComment.message = inputmessage;
+        inputComment.uid = uid;
+
+        //inputMessage.setMessage(inputmessage);
         //inputMessage.setMessage("여기다가 쓰는데로 왓슨한데 보내게 됨!!!!!");
-        inputMessage.setId("1");
-        messageArrayList.add(inputMessage);
+        //수정한 부분
+
+        comments.add(inputComment);   //방금 수정
+        //messageArrayList.add(inputMessage);
         this.inputMessage.setText("");
         mAdapter.notifyDataSetChanged();
         final String[][] BabyGrowthList = new String[40][3];
@@ -250,6 +376,9 @@ public class BabyActivity extends AppCompatActivity {
         BabyGrowthList[39][1] = "저는 태어나면 바로 폐로 호흡하고, 울음소리로 저의 의사를 전달할거에용ㅎㅎㅎ";
         BabyGrowthList[39][2] = "약 5%정도의 아기만이 출산예정일을 지킨다고 하니, 예정일이 지났다고 해도 너무 걱정하시지 마세요!><";
 
+        //수정한 부분3
+        ChatModel chatModel = new ChatModel();
+        chatModel.users.put(uid, true);
 
 
         Thread thread = new Thread(new Runnable(){
@@ -258,26 +387,34 @@ public class BabyActivity extends AppCompatActivity {
 
                     ConversationService service = new ConversationService(ConversationService.VERSION_DATE_2016_09_20);
                     MessageResponse response;
-                    if(a==0) {
-                        service.setUsernameAndPassword("bdcc80b8-8377-4204-82a8-e216db9823a9", "ouF38I4DN7cy");
-                        MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-                        response = service.message("9a28c659-3f7a-4ace-862c-294695262fe6", newMessage).execute();
+
+                    //수정한 부분6
+                    ChatModel chatModel = new ChatModel();
+                    chatModel.users.put(babyUid, true);
+
+                    ChatModel.Comment comment = new ChatModel.Comment();    //매번 새로운 comment를 만들어서 거기에 message저장
+                    comment.uid = babyUid;  //이 메시지의 uid는 babyUid로 지정
 
 
-                    }
-                    else {
-                        service.setUsernameAndPassword("49b92425-ece5-43bb-bf80-c55202079577", "dZrXLy1SucbI");
-                        MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
-                        response = service.message("44556e0f-0428-4e70-8d2a-ab9938521ba2", newMessage).execute();
-                    }
 
+                    service.setUsernameAndPassword("bdcc80b8-8377-4204-82a8-e216db9823a9", "ouF38I4DN7cy");
+                    MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
+                    response = service.message("9a28c659-3f7a-4ace-862c-294695262fe6", newMessage).execute();
 
                     if(response.getContext() !=null) {//왓슨에게 답변받은거 GetContext 를 이용하여 context 에 저장
                         context.clear();
                         context = response.getContext();
 
+                        //수정한 부분4
+                        comment.message = response.getText().toString().replace("[","").replace("]","");
+                        //comment.message = w_answer;
+                        if(!comment.message.equals("gotoandroidstudio"))
+                            FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);    //그러나 gotoandroidstudio저장됨Watson말을 저장!?, push는 comment마다 새로운 id를 주기 위해
+
+
                     }
-                    Message outMessage=new Message();
+                    //Message outMessage=new Message();
+                    ChatModel.Comment outComment = new ChatModel.Comment();
                     if(response!=null)
                     {
                         if(response.getOutput()!=null && response.getOutput().containsKey("text"))
@@ -287,18 +424,30 @@ public class BabyActivity extends AppCompatActivity {
 
                             //!!!!!여기가 사용자가 아기상태 물어보면 자바에서 직접 대답하는 부분
                             if(outputmessage.equals("gotoandroidstudio")){
-                                outMessage.setMessage(BabyGrowthList[dDay-1][num()]);
+
+                                //수정한 부분5
+                                String babyGrowthMessage = BabyGrowthList[dDay-1][num()];
+                                comment.message = babyGrowthMessage;
+                                FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);    //제대로 된 답변
+
+                                outComment.message = babyGrowthMessage;
+                                //w_answer = babyGrowthMessage;
+
                             }
 
-                            else outMessage.setMessage(outputmessage);
+                            else {
+                                outComment.message = outputmessage;
+                                //w_answer = outputmessage;
+                            }
                             //outMessage.setMessage("여기다가 쓰는거 waston이 출력하게 되어있음!!!!");
-                            outMessage.setId("2");
-                            messageArrayList.add(outMessage);
+                            outComment.uid = babyUid;
                         }
+                        comments.add(outComment);
 
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 mAdapter.notifyDataSetChanged();
+                                //recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, mAdapter.getItemCount()-1);
                                 if (mAdapter.getItemCount() > 1) {
                                     recyclerView.getLayoutManager().smoothScrollToPosition(recyclerView, null, mAdapter.getItemCount()-1);
 
@@ -319,10 +468,9 @@ public class BabyActivity extends AppCompatActivity {
 
     }
 
-    private boolean checkInternetConnection() {
+    private boolean checkInternetConnection(){
         // get Connectivity Manager object to check connection
-        ConnectivityManager cm =
-                (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager cm = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 
         NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
         boolean isConnected = activeNetwork != null &&

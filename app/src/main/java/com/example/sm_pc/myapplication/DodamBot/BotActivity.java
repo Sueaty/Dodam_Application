@@ -3,8 +3,8 @@ package com.example.sm_pc.myapplication.DodamBot;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,7 +14,6 @@ import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.R;
-
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
@@ -40,7 +39,6 @@ public class BotActivity extends AppCompatActivity {
         inputMessage = (EditText) findViewById(R.id.message);
         btnSend = (ImageButton) findViewById(R.id.btn_send);
 
-
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
 
         messageArrayList = new ArrayList<>();
@@ -60,7 +58,7 @@ public class BotActivity extends AppCompatActivity {
                 }
             }
         });
-    };
+    }
 
 
     // Sending a message to Watson Conversation Service
@@ -81,7 +79,6 @@ public class BotActivity extends AppCompatActivity {
                     service.setUsernameAndPassword("bdcc80b8-8377-4204-82a8-e216db9823a9", "ouF38I4DN7cy");
                     MessageRequest newMessage = new MessageRequest.Builder().inputText(inputmessage).context(context).build();
                     MessageResponse response = service.message("7e44c660-c381-4b1d-b041-e0ae20f0b666", newMessage).execute();
-
                     if(response.getContext() !=null)
                     {
                         context.clear();
