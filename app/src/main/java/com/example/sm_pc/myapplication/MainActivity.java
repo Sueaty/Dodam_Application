@@ -1,21 +1,42 @@
 
 package com.example.sm_pc.myapplication;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
+import android.support.design.widget.FloatingActionButton;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
+import com.example.sm_pc.myapplication.Hospital.AddReminderActivity;
+import com.example.sm_pc.myapplication.Hospital.AlarmCursorAdapter;
+import com.example.sm_pc.myapplication.Hospital.Data.AlarmReminderContract;
+import com.example.sm_pc.myapplication.Hospital.Data.AlarmReminderDbHelper;
+import com.example.sm_pc.myapplication.Hospital.HospitalMainActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
 import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
@@ -35,9 +56,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-public class MainActivity extends AppCompatActivity {
+import static com.example.sm_pc.myapplication.Hospital.HospitalMainActivity.CHANNEL_ID;
 
-/*
+public class MainActivity extends AppCompatActivity{
+    /*
 1. 1주~2주
 2. 3주~4주
 3. 5주
@@ -52,16 +74,27 @@ public class MainActivity extends AppCompatActivity {
  */
     private TextView textName,textDdate, textToday;
     private ImageButton buttonSetting;
-    private Button signOut, buttonDodam, buttonBaby, buttonDiary;
+    private Button signOut, buttonDodam, buttonBaby, buttonDiary, buttonHospital;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
+        private FloatingActionButton mAddReminderButton;
+        private Toolbar mToolbar;
+        //public static final String CHANNEL_ID="channel";
+
+    AlarmCursorAdapter mCursorAdapter;
+        AlarmReminderDbHelper alarmReminderDbHelper = new AlarmReminderDbHelper(this);
+        ListView reminderListView;
+        TextView reminderText;
+
+        private String alarmTitle = "";
+
+        private static final int VEHICLE_LOADER = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         mAuth = FirebaseAuth.getInstance();
         mRootref = FirebaseDatabase.getInstance().getReference();
 
@@ -73,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
         buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
         buttonDiary = (Button) findViewById(R.id.buttonMainDiary);
-
+        buttonHospital =(Button)findViewById(R.id.buttonMainHospital);
         String userUID = mAuth.getCurrentUser().getUid();
         mRootref.child("Baby").child(userUID).addValueEventListener(new ValueEventListener() {
             @Override
@@ -94,12 +127,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         dodamClick();
         babyClick();
         diaryClick();
         settingClick();
         signOutClick();
-
+        hospitalClick();
         updateTodaydate();
     }
 
@@ -146,6 +180,16 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    private void hospitalClick(){
+        buttonHospital.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                Intent intent = new Intent(MainActivity.this, HospitalMainActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
     private void diaryClick(){
         buttonDiary.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -179,4 +223,5 @@ public class MainActivity extends AppCompatActivity {
         });
     }
     //=======================================================================================================================================================//
+
 }
