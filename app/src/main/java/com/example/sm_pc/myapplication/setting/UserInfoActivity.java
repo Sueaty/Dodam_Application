@@ -1,13 +1,28 @@
 package com.example.sm_pc.myapplication.setting;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
+import com.example.sm_pc.myapplication.account.LoginActivity;
+import com.example.sm_pc.myapplication.account.SignupActivity;
+import com.firebase.ui.auth.data.model.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserInfo;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -17,9 +32,12 @@ import java.io.InputStreamReader;
 
 public class UserInfoActivity extends AppCompatActivity {
 
-    private TextView email, name, expectDate, dDate;
-    private Button logOut, changePw, quitDodam;
-
+    ImageView img;
+    EditText newPw, newPwCheck;
+    private Button signOut, changePw, enableChangePw, quitDodam;
+    FirebaseAuth mAuth;
+    FirebaseUser currentUser;
+    DatabaseReference mRootref;
 
 
     @Override
@@ -27,55 +45,105 @@ public class UserInfoActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
 
-        //write the id of loginned user
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        email = (TextView) findViewById(R.id.textUserShowId);
-        email.setText(user.getEmail());
+        img = (ImageView) findViewById(R.id.backgroundImage);
+        newPw = (EditText) findViewById(R.id.textNewPwd);
+        newPwCheck = (EditText) findViewById(R.id.textCheckNewPwd);
+        signOut = (Button) findViewById(R.id.buttonLogOut);
+        changePw = (Button) findViewById(R.id.buttonChangePwd);
+        enableChangePw = (Button) findViewById(R.id.changePasswordButton);
+        quitDodam = (Button) findViewById(R.id.buttonQuitDodam);
 
-        //write the name of the baby
-        name = (TextView) findViewById(R.id.textUserBabyName);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
+        mRootref = FirebaseDatabase.getInstance().getReference();
 
-        //write baby expected date
-        expectDate = (TextView) findViewById(R.id.textUserExpectedDate);
-
-        String FILENAME = "BABY_NAME_FILE";
-        String FILEDATE = "BABY_DATE_FILE";
-        FileInputStream nameRead = null;
-        FileInputStream dateRead = null;
-
-        try {
-            String textNameRead, textExpectDateRead;
-            nameRead = openFileInput(FILENAME);
-            dateRead = openFileInput(FILEDATE);
-            InputStreamReader isr_name = new InputStreamReader(nameRead);
-            InputStreamReader isr_date = new InputStreamReader(dateRead);
-            BufferedReader br_name = new BufferedReader(isr_name);
-            BufferedReader br_date = new BufferedReader(isr_date);
-            StringBuilder sb_name = new StringBuilder();
-            StringBuilder sb_date = new StringBuilder();
-
-            while((textNameRead = br_name.readLine()) != null){
-                sb_name.append(textNameRead);
+        signOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signOutListener();
             }
-            name.setText(sb_name.toString());
+        });
 
-            while((textExpectDateRead = br_date.readLine()) != null){
-                sb_date.append(textExpectDateRead);
+        changePw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                img.setVisibility(View.INVISIBLE);
+                newPw.setVisibility(View.VISIBLE);
+                newPwCheck.setVisibility(View.VISIBLE);
+                enableChangePw.setVisibility(View.VISIBLE);
+                changePwClick();
             }
-            expectDate.setText(sb_date.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
+        });
+
+        quitDodam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quitDodamClick();
+            }
+        });
+    }
+
+    private void signOutListener() {
+        mAuth.signOut();
+        Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
+        startActivity(intent);
+        Toast.makeText(UserInfoActivity.this, "로그아웃 되었습니다.", Toast.LENGTH_SHORT).show();
+        finish();
+    }
+
+    private void changePwClick() {
+        enableChangePw.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (currentUser != null && newPw.getText().toString().trim().equals("")) {
+                    Toast.makeText(UserInfoActivity.this, "Re-enter", Toast.LENGTH_SHORT).show();
+                    return;
+                } else {
+                    if (newPw.getText().toString().trim().equals(newPwCheck.getText().toString().trim())) {
+                        currentUser.updatePassword(newPw.getText().toString().trim()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Toast.makeText(UserInfoActivity.this, "Password Updated", Toast.LENGTH_SHORT).show();
+                                    signOutListener();
+                                } else {
+                                    Toast.makeText(UserInfoActivity.this, "Failed to Update Password.\nCheck Again", Toast.LENGTH_SHORT).show();
+                                    return;
+                                }
+                            }
+                        });
+                    } else {
+                        Toast.makeText(UserInfoActivity.this, "Two Passwords Different.\nCheck Again", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            }
+        });
+    }
+
+    private void quitDodamClick(){
+        img.setVisibility(View.INVISIBLE);
+        newPw.setVisibility(View.INVISIBLE);
+        newPwCheck.setVisibility(View.INVISIBLE);
+        if(currentUser != null) {
+            mRootref.child("Setting").child(currentUser.getUid()).removeValue();
+            mRootref.child("Baby").child(currentUser.getUid()).removeValue();
+            mRootref.child("Notes").child(currentUser.getUid()).removeValue();
+            currentUser.delete().addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()){
+                        Toast.makeText(UserInfoActivity.this, "Successfully deleted", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(UserInfoActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else{
+                        Toast.makeText(UserInfoActivity.this, "Failed to delete.\nTry Again", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+            });
         }
-
-        //calculate and write remaining days (D-day)
-        dDate = (TextView) findViewById(R.id.textUserDdate);
-
-
-
     }
 }
-
-
 

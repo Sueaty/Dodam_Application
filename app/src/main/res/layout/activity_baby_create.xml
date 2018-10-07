@@ -106,6 +106,7 @@
         app:layout_constraintTop_toBottomOf="@+id/radioGroup3"
         app:layout_constraintVertical_bias="0.0">
 
+
         <TextView
             android:id="@+id/textDate"
             android:layout_width="wrap_content"
@@ -127,6 +128,27 @@
 
     </LinearLayout>
 
+    <TextView
+        android:id="@+id/showLeftDate"
+        android:layout_width="300dp"
+        android:layout_height="44dp"
+        android:layout_gravity="center"
+        android:layout_margin="15dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:gravity="center"
+        android:hint="@string/textBabyBirth"
+        android:textSize="20sp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
+        app:layout_constraintVertical_bias="0.111" />
+
+
     <ImageView
         android:id="@+id/imageView6"
         android:layout_width="217dp"
@@ -139,8 +161,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/textView3"
-        app:layout_constraintVertical_bias="0.626"
+        app:layout_constraintVertical_bias="0.699"
         app:srcCompat="@drawable/login_logo" />
+
 
     <Button
         android:id="@+id/buttonReturnBaby"

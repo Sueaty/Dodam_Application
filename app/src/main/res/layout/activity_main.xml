@@ -10,15 +10,15 @@
 
     <TextView
         android:id="@+id/mainBabyDday"
-        android:layout_width="222dp"
+        android:layout_width="200dp"
         android:layout_height="35dp"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="5dp"
         android:layout_marginTop="4dp"
-        android:text="TextView"
-        android:gravity="left|fill"
+        android:gravity="start|fill"
         android:paddingLeft="15dp"
+        android:text="TextView"
         android:textColor="@color/purple"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -26,6 +26,25 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.004" />
+
+    <TextView
+        android:id="@+id/todayDate"
+        android:layout_width="163dp"
+        android:layout_height="36dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="4dp"
+        android:gravity="end|fill"
+        android:paddingLeft="15dp"
+        android:text="TextView"
+        android:textColor="@color/purple"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.851"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.003" />
 
     <ImageButton
         android:id="@+id/buttonSetting"

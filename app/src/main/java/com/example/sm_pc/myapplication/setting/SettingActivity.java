@@ -14,7 +14,7 @@ import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
 
 public class SettingActivity extends AppCompatActivity {
 
-    private Button buttonHome, buttonBaby, buttonHow, buttonUser;
+    private Button buttonHome, buttonBaby, buttonSetting, buttonHow, buttonUser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +24,7 @@ public class SettingActivity extends AppCompatActivity {
         buttonHome = (Button) findViewById(R.id.buttonSettingMain);
         buttonBaby = (Button) findViewById(R.id.buttonSettingBaby);
         buttonHow = (Button) findViewById(R.id.buttonHowTo);
+        buttonSetting = (Button) findViewById(R.id.buttonSettingSetting);
         buttonUser = (Button) findViewById(R.id.buttonSettingUserChange);
 
         buttonHome.setOnClickListener(new View.OnClickListener(){
@@ -53,25 +54,14 @@ public class SettingActivity extends AppCompatActivity {
             }
 
         });
-/*
-        buttonHow.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(SettingActivity.this, ChangeSettingActivity.class);
-                startActivity(intent);
-            }
 
-        });
-*/
-        buttonUser.setOnClickListener(new View.OnClickListener(){
+        buttonSetting.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v){
+            public void onClick(View v) {
                 Intent intent = new Intent(SettingActivity.this, UserInfoActivity.class);
                 startActivity(intent);
             }
-
         });
-
     }
 }
 
