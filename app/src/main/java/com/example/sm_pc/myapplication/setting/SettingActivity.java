@@ -98,6 +98,7 @@ public class SettingActivity extends AppCompatActivity {
                 builder.setTitle("도담도담에 대하여");
                 String Message = "도담도담은~";
                 builder.setMessage(Message);
+                builder.setPositiveButton("OK", null);
                 builder.show();
             }
         });

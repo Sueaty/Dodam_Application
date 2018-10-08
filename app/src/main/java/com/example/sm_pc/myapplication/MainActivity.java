@@ -1,45 +1,25 @@
 
 package com.example.sm_pc.myapplication;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.CountDownTimer;
-import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.text.InputType;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.ProgressBar;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
-import com.example.sm_pc.myapplication.Hospital.AddReminderActivity;
-import com.example.sm_pc.myapplication.Hospital.AlarmCursorAdapter;
-import com.example.sm_pc.myapplication.Hospital.Data.AlarmReminderContract;
-import com.example.sm_pc.myapplication.Hospital.Data.AlarmReminderDbHelper;
-import com.example.sm_pc.myapplication.Hospital.HospitalMainActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
 import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
+import com.example.sm_pc.myapplication.setting.Baby.DatabaseHelper;
 import com.example.sm_pc.myapplication.setting.SettingActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -47,98 +27,90 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.type.DayOfWeek;
-
-import java.text.DateFormat;
-import java.time.Month;
-import java.time.Year;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.Locale;
 
-import static com.example.sm_pc.myapplication.Hospital.HospitalMainActivity.CHANNEL_ID;
+public class MainActivity extends AppCompatActivity {
 
-public class MainActivity extends AppCompatActivity{
-    /*
-1. 1주~2주
-2. 3주~4주
-3. 5주
-4. 6주
-5. 7주~9주
-6. 10주~13주
-7. 14주~18주
-8. 19주~22주
-9. 23주~28주
-10. 29주~34주
-11. 35주~40주
- */
+    DatabaseHelper myDb;
     private TextView textName,textDdate, textToday;
     private ImageButton buttonSetting;
-    private Button signOut, buttonDodam, buttonBaby, buttonDiary, buttonHospital;
+    private Button signOut, buttonDodam, buttonBaby, buttonDiary;
+    private ImageView babyPic;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
-        private FloatingActionButton mAddReminderButton;
-        private Toolbar mToolbar;
-        //public static final String CHANNEL_ID="channel";
-
-    AlarmCursorAdapter mCursorAdapter;
-        AlarmReminderDbHelper alarmReminderDbHelper = new AlarmReminderDbHelper(this);
-        ListView reminderListView;
-        TextView reminderText;
-
-        private String alarmTitle = "";
-
-        private static final int VEHICLE_LOADER = 0;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mAuth = FirebaseAuth.getInstance();
-        mRootref = FirebaseDatabase.getInstance().getReference();
 
-        textName = (TextView) findViewById(R.id.mainBabyName);
-        textDdate = (TextView) findViewById(R.id.mainBabyDday);
-        textToday = (TextView) findViewById(R.id.todayDate);
-        buttonSetting = (ImageButton) findViewById(R.id.buttonSetting);
-        signOut = (Button) findViewById(R.id.logOut);
-        buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
-        buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
-        buttonDiary = (Button) findViewById(R.id.buttonMainDiary);
-        buttonHospital =(Button)findViewById(R.id.buttonMainHospital);
-        String userUID = mAuth.getCurrentUser().getUid();
-        mRootref.child("Baby").child(userUID).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if( (dataSnapshot.exists()) && (dataSnapshot.hasChild("Name")) && (dataSnapshot.hasChild("LeftDate")) ){
-                    String getBabyName = dataSnapshot.child("Name").getValue().toString();
-                    String getBabyDate = dataSnapshot.child("LeftDate").getValue().toString();
+        define(); // define
+        updateDday(); // update today's d-day
+        updateTodaydate(); // update today's date
+        textBabyName(); // set text of 'BABY NAME'
 
-                    textDdate.setText(getBabyDate);
-                    textName.setText(getBabyName);
-                }
-                else{ Toast.makeText(MainActivity.this, "Failed to Retrieve Data from Database", Toast.LENGTH_SHORT).show();
-                }
-            }
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
-        });
-
-
+        // click and action methods
         dodamClick();
         babyClick();
         diaryClick();
         settingClick();
         signOutClick();
-        hospitalClick();
-        updateTodaydate();
     }
 
+    private void define(){
+        myDb = new DatabaseHelper(this);
+        mAuth = FirebaseAuth.getInstance();
+        mRootref = FirebaseDatabase.getInstance().getReference();
+        textName = (TextView) findViewById(R.id.mainBabyName);
+        textDdate = (TextView) findViewById(R.id.mainBabyDday);
+        textToday = (TextView) findViewById(R.id.todayDate);
+        buttonSetting = (ImageButton) findViewById(R.id.buttonSetting);
+        //signOut = (Button) findViewById(R.id.logOut);
+        buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
+        buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
+        buttonDiary = (Button) findViewById(R.id.buttonMainDiary);
+        babyPic = (ImageView) findViewById(R.id.babyImageView);
+    }
 
-    public void updateTodaydate(){
+    private void updateDday(){
+        String getExpectDate ="";
+        String getCompareDate = "";
+        String getDDay = "";
+        Cursor res = myDb.getAllData();
+        if(res.getCount() == 0){
+
+        } else{
+            if(res.moveToFirst()){
+                do{
+                    getExpectDate = res.getString(1);
+                    getCompareDate = res.getString(2);
+                    getDDay = res.getString(4);
+                } while(res.moveToNext());
+            }
+            // get today
+            GregorianCalendar calendar = new GregorianCalendar();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            String todayDate = String.format(Locale.getDefault(), "%d%d%d", year, month, day);
+
+            int dDay = Integer.parseInt(getDDay);
+            if (!getCompareDate.equals(todayDate)) {
+                --dDay; // if compare date and today date is different, it means one day has passed, so tick off one day
+                boolean isUpdatd = myDb.updateData("1", getExpectDate, todayDate, todayDate, String.valueOf(dDay)); // and update the baby_table
+            }
+            String setDday;
+            if(dDay >= 0){ setDday = "D - " + dDay; }
+            else { setDday = "Born"; }
+            textDdate.setText(setDday);
+            updateTodaypic(dDay);
+        }
+    }
+
+    private void updateTodaydate(){
         Calendar calendar = Calendar.getInstance();
         int todayDay, todayMonth, todayYear;
         String updateDate;
@@ -158,6 +130,57 @@ public class MainActivity extends AppCompatActivity{
         textToday.setText(updateDate);
     }
 
+    private void updateTodaypic(int dDay){
+        if(0 <= dDay && dDay <= 41) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_eleven));}
+        else if(42 <= dDay && dDay <= 83) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_ten));}
+        else if(84 <= dDay && dDay <= 125) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_nine));}
+        else if(126 <= dDay && dDay <= 153) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_eight));}
+        else if(154 <= dDay && dDay <= 188) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_seven));}
+        else if(189 <= dDay && dDay <= 216) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_six));}
+        else if(217 <= dDay && dDay <= 237) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_five));}
+        else if(238 <= dDay && dDay <= 244) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_four));}
+        else if(245 <= dDay && dDay <= 251) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_three));}
+        else if(252 <= dDay && dDay <= 265) {babyPic.setImageDrawable(getDrawable(R.drawable.baby_two));}
+        else {babyPic.setImageDrawable(getDrawable(R.drawable.baby_one));}
+
+    }
+
+    private void textBabyName(){
+        String userUID = mAuth.getCurrentUser().getUid();
+        mRootref.child("Baby").child(userUID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(!dataSnapshot.exists()){
+                    AlertDialog.Builder checkBaby = new AlertDialog.Builder(MainActivity.this);
+                    checkBaby.setMessage("아기 등록을 반드시 해주세요");
+                    checkBaby.setNegativeButton("등록하기", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent = new Intent(MainActivity.this, BabyCreateActivity.class);
+                            startActivity(intent);
+                        }
+                    });
+                    checkBaby.setPositiveButton("로그아웃", null);
+                    AlertDialog alert = checkBaby.create();
+                    alert.show();
+                }
+                else{
+                    if(dataSnapshot.hasChild("Name")){
+                        String getBabyName = dataSnapshot.child("Name").getValue().toString();
+                        textName.setText(getBabyName);
+                    }
+                    else{
+                        Toast.makeText(MainActivity.this, "Failed to Retrieve Data from Database", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     // On CLICK ACTIVITIES //
     //=======================================================================================================================================================//
     private void dodamClick(){
@@ -175,16 +198,6 @@ public class MainActivity extends AppCompatActivity{
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(MainActivity.this, BabyActivity.class);
-                startActivity(intent);
-            }
-        });
-    }
-
-    private void hospitalClick(){
-        buttonHospital.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view){
-                Intent intent = new Intent(MainActivity.this, HospitalMainActivity.class);
                 startActivity(intent);
             }
         });
@@ -223,5 +236,4 @@ public class MainActivity extends AppCompatActivity{
         });
     }
     //=======================================================================================================================================================//
-
 }

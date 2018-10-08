@@ -111,7 +111,6 @@
             android:id="@+id/textDate"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginRight="40dp"
             android:layout_weight="2"
             android:gravity="center"
             android:text="@string/textBabyBirth"
@@ -164,44 +163,61 @@
         app:layout_constraintVertical_bias="0.699"
         app:srcCompat="@drawable/login_logo" />
 
-
-    <Button
-        android:id="@+id/buttonReturnBaby"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginStart="96dp"
+        android:layout_marginBottom="39dp"
         android:layout_marginTop="8dp"
-        android:text="돌아가기"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.89" />
-
-    <Button
-        android:id="@+id/buttonSaveBaby"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="신규등록"
+        android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.276"
-        app:layout_constraintStart_toEndOf="@+id/buttonReturnBaby"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.889" />
+        app:layout_constraintVertical_bias="0.97">
 
-    <Button
-        android:id="@+id/buttonMendBaby"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:text="수정 완료" />
+        <Button
+            android:id="@+id/buttonReturnBaby"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginStart="84dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/babycreate_button_customize"
+            android:text="이전\n화면"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/buttonMendBaby"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/babycreate_button_customize"
+            android:text="수정\n완료"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/buttonSaveBaby"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/babycreate_button_customize"
+            android:text="신규\n등록"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold"
+            android:layout_weight="1"/>
+    </LinearLayout>
+
+
+
 
 </android.support.constraint.ConstraintLayout>
