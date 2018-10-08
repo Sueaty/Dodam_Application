@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -33,15 +34,17 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.Locale;
 
 public class BabyCreateActivity extends AppCompatActivity {
 
+    DatabaseHelper myDb;
     private EditText babyName;
     private TextView dDayDate, leftDate;
     private RadioButton boy, girl, undecided;
-    private Button buttonDate, buttonSave, buttonReturn;
+    private Button buttonDate, buttonSave, buttonReturn, buttonChange;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
 
@@ -57,18 +60,17 @@ public class BabyCreateActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby_create);
 
-        mAuth = FirebaseAuth.getInstance();
-        mRootref = FirebaseDatabase.getInstance().getReference();
+        define();
+        // If there's a existing data, it shows in advance
+        displayInformation();
+        // Making a completely new baby
+        createBabyInformation();
+        // Change baby Information
+        changeBabyInformation();
 
-        babyName = (EditText) findViewById(R.id.textBabyName);
-        dDayDate = (TextView) findViewById(R.id.textDate);
-        leftDate = (TextView) findViewById(R.id.showLeftDate);
-        boy = (RadioButton) findViewById(R.id.buttonBoy);
-        girl = (RadioButton) findViewById(R.id.buttonGirl);
-        undecided = (RadioButton) findViewById(R.id.buttonUndecided);
-        buttonDate = (Button) findViewById(R.id.buttonDate);
-        buttonSave = (Button) findViewById(R.id.buttonSaveBaby);
-        buttonReturn = (Button) findViewById(R.id.buttonReturnBaby);
+        // Returns to previous page
+        returnClick();
+
 
         buttonDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,10 +94,25 @@ public class BabyCreateActivity extends AppCompatActivity {
         resultNumber = (int) r + 1;
 
         updateDisplay();
-        displayInformation();
-        saveInformation();
-        returnClick();
 
+    }
+
+    private void define(){
+
+        myDb = new DatabaseHelper(this);
+        mAuth = FirebaseAuth.getInstance();
+        mRootref = FirebaseDatabase.getInstance().getReference();
+
+        babyName = (EditText) findViewById(R.id.textBabyName);
+        dDayDate = (TextView) findViewById(R.id.textDate);
+        leftDate = (TextView) findViewById(R.id.showLeftDate);
+        boy = (RadioButton) findViewById(R.id.buttonBoy);
+        girl = (RadioButton) findViewById(R.id.buttonGirl);
+        undecided = (RadioButton) findViewById(R.id.buttonUndecided);
+        buttonDate = (Button) findViewById(R.id.buttonDate);
+        buttonSave = (Button) findViewById(R.id.buttonSaveBaby);
+        buttonReturn = (Button) findViewById(R.id.buttonReturnBaby);
+        buttonChange = (Button) findViewById(R.id.buttonMendBaby);
     }
 
     private void displayInformation(){
@@ -119,64 +136,122 @@ public class BabyCreateActivity extends AppCompatActivity {
                         else {girl.setChecked(true);}
                     }
                     if (dataSnapshot.hasChild("LeftDate")){
-                        String left = dataSnapshot.child("LeftDate").getValue().toString();
+                        String left;
+                        if(resultNumber >= 0) {left = String.valueOf(resultNumber);}
+                        else { left = "Born"; }
                         leftDate.setText(left);
                     }
                 }
             }
-
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
     }
-    private void saveInformation(){
+
+    private void createBabyInformation(){
         buttonSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String userUID = mAuth.getCurrentUser().getUid();
-                String expectDate = dDayDate.getText().toString().trim();
-                String Name = babyName.getText().toString().trim();
-                String gender;
-                String leftDate;
-
-                // decide baby's gender (if not chosen, set them as 'undecided')
-                if(boy.isChecked()){gender = "boy";}
-                else if (girl.isChecked()){gender = "girl";}
-                else {gender = "undecided";}
-
-                // decide the input String according to left date
-                if(resultNumber >= 0) {leftDate = "D - " + String.valueOf(resultNumber);}
-                else { leftDate = "Born"; }
-
-                // Check if Name & Expect Date are all filled out
-                if (TextUtils.isEmpty(Name) || TextUtils.isEmpty(expectDate)){
-                    Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
-                    return;
+                // Save in Firebase
+                saveFirebase();
+                // Save in SQLite
+                GregorianCalendar calendar = new GregorianCalendar();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                String compare = String.format(Locale.getDefault(), "%d%d%d", year, month, day);
+                boolean isInserted = myDb.insertData(
+                        dDayDate.getText().toString(),
+                        compare,
+                        compare,
+                        leftDate.getText().toString()
+                );
+                if(isInserted){
+                    Toast.makeText(BabyCreateActivity.this, "SUCCESSFULLY INSERTED", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else{
+                    Toast.makeText(BabyCreateActivity.this, "FAILED TO INSERT", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
 
-                // Make a Hashmap
-                HashMap<String, String> babyMap = new HashMap<>();
-                    babyMap.put("Name", Name);
-                    babyMap.put("ExpectDate", expectDate);
-                    babyMap.put("LeftDate", leftDate);
-                    babyMap.put("Gender", gender);
+    }
 
-                // Input Data into Firebase Realtime Database
-                mRootref.child("Baby").child(userUID).setValue(babyMap).addOnCompleteListener(new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-                        if(task.isSuccessful()){
-                            Toast.makeText(BabyCreateActivity.this, "Baby Information Updated", Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        } else{
-                            Toast.makeText(BabyCreateActivity.this, "Failed to save information. Try Again", Toast.LENGTH_SHORT).show();
-                            finish();
-                        }
-                    }
-                });
+    private void changeBabyInformation(){
+        buttonChange.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Firebase Change Information
+                saveFirebase();
+                // SQLite Change Information
+                GregorianCalendar calendar = new GregorianCalendar();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                String compare = String.format(Locale.getDefault(), "%d%d%d", year, month, day);
+                boolean isUpdated =
+                        myDb.updateData(
+                                "1",
+                                dDayDate.getText().toString(),
+                                compare,
+                                compare,
+                                leftDate.getText().toString()
+                        );
+                if (isUpdated){
+                    Toast.makeText(BabyCreateActivity.this, "SUCCESSFULLY INSERTED", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else{
+                    Toast.makeText(BabyCreateActivity.this, "FAILED TO INSERT", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private void saveFirebase(){
+        final String userUID = mAuth.getCurrentUser().getUid();
+        String expectDate = dDayDate.getText().toString().trim();
+        String Name = babyName.getText().toString().trim();
+        String gender;
+        String leftDate;
+
+        // decide baby's gender (if not chosen, set them as 'undecided')
+        if(boy.isChecked()){gender = "boy";}
+        else if (girl.isChecked()){gender = "girl";}
+        else {gender = "undecided";}
+
+        // decide the input String according to left date
+        if(resultNumber >= 0) {leftDate = String.valueOf(resultNumber);}
+        else { leftDate = "Born"; }
+
+        // Check if Name & Expect Date are all filled out
+        if (TextUtils.isEmpty(Name) || TextUtils.isEmpty(expectDate)){
+            Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        // Make a Hashmap
+        HashMap<String, String> babyMap = new HashMap<>();
+            babyMap.put("Name", Name);
+            babyMap.put("ExpectDate", expectDate);
+            babyMap.put("LeftDate", leftDate);
+            babyMap.put("Gender", gender);
+
+        // Input Data into Firebase Realtime Database
+        mRootref.child("Baby").child(userUID).setValue(babyMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if(task.isSuccessful()){
+                    Toast.makeText(BabyCreateActivity.this, "Baby Information Updated", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(BabyCreateActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } else{
+                    Toast.makeText(BabyCreateActivity.this, "Failed to save information. Try Again", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
             }
         });
     }
@@ -198,9 +273,9 @@ public class BabyCreateActivity extends AppCompatActivity {
         }
 
         if (resultNumber >= 0) {
-            leftDate.setText(String.format(Locale.getDefault(), "D - %d", resultNumber));
+            leftDate.setText(String.format(Locale.getDefault(), "%d", resultNumber));
         } else {
-            leftDate.setText(String.format(Locale.getDefault(), "Baby is already born"));
+            leftDate.setText(String.format(Locale.getDefault(), "Born"));
         }
     }
 
