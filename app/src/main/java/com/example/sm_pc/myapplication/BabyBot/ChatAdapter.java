@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.sm_pc.myapplication.DodamBot.BotActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.model.ChatModel;
 import com.example.sm_pc.myapplication.model.UserModel;
@@ -41,7 +42,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             private String uid;
             private ImageButton btnSend;
             private String chatRoomUid;
-            private String destinatonUid;
+            private String destinationUid;
             private UserModel destinationUserModel;
             private String babyUid;
             private DatabaseReference databaseReference;
@@ -69,10 +70,10 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //List<ChatModel.Comment> comments = new ArrayList<>();
         //comments = messageArrayList<>();
         chatRoomUid = BabyActivity.getRoomUid();
-        destinatonUid = "70Zg00IGY5ZmwjPSt9nfWo9Jfh03";
+        destinationUid = BabyActivity.getDestinationUid();
         babyUid = "Baby";
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(destinatonUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(destinationUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 destinationUserModel = dataSnapshot.getValue(UserModel.class);
@@ -151,7 +152,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     void getMessageList() {
 
         if (chatRoomUid != null) {
-            FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("babyTalk").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
 
                 @Override
 
