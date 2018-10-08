@@ -64,7 +64,7 @@ public class BabyActivity extends AppCompatActivity {
     private Map<String,UserModel> users = new HashMap<>();
 
     private String uid;
-    private String destinatonUid;
+    public static String destinationUid;
     private String babyUid;
     private String w_answer;
 
@@ -82,7 +82,8 @@ public class BabyActivity extends AppCompatActivity {
         //수정한 부분2
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();//채팅을 거는 아이디
         babyUid = "Baby";
-        destinatonUid = "70Zg00IGY5ZmwjPSt9nfWo9Jfh03";
+        destinationUid = getIntent().getStringExtra("destinationUid");
+        destinationUid = "70Zg00IGY5ZmwjPSt9nfWo9Jfh03";
 
         inputMessage = (EditText) findViewById(R.id.message);
         //EditText 에 사용자가 입력한 메시지를 받아와서 inputMessage 에 저장!!!!!!
@@ -114,7 +115,8 @@ public class BabyActivity extends AppCompatActivity {
                     chatModel.users.put(uid,true);  //true값을 가진 uid
                     chatBaby.users.put(babyUid,true);
 
-
+                    chatModel.users.put(destinationUid,true);
+                    checkChatRoom();
 
                     //chatModel.users.put(destinatonUid,true);
 
@@ -124,10 +126,22 @@ public class BabyActivity extends AppCompatActivity {
                         btnSend.setEnabled(false);
                         //FirebaseDatabase.getInstance().getReference().child("chatrooms1").push().setValue(chatBaby);
 
-                        FirebaseDatabase.getInstance().getReference().child("chatrooms1").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        FirebaseDatabase.getInstance().getReference().child("babyTalk").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 checkChatRoom();
+                            }
+                        });
+                        ChatModel.Comment comment = new ChatModel.Comment();
+                        comment.uid = uid;
+                        comment.message = inputMessage.getText().toString();
+                        //FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);
+                        FirebaseDatabase.getInstance().getReference().child("babyTalk").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            @Override
+
+                            public void onComplete(@NonNull Task<Void> task) {
+                                inputMessage.setText("");
                             }
                         });
 
@@ -137,7 +151,7 @@ public class BabyActivity extends AppCompatActivity {
                         comment.uid = uid;
                         comment.message = inputMessage.getText().toString();
                         //FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);
-                        FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        FirebaseDatabase.getInstance().getReference().child("babyTalk").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
 
                             @Override
 
@@ -157,7 +171,7 @@ public class BabyActivity extends AppCompatActivity {
 }
     void  checkChatRoom(){
 
-        FirebaseDatabase.getInstance().getReference().child("chatrooms1").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("babyTalk").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
 
             @Override
 
@@ -185,6 +199,9 @@ public class BabyActivity extends AppCompatActivity {
 
     public static String getRoomUid() {
         return chatRoomUid;
+    }
+    public static String getDestinationUid() {
+        return destinationUid;
     }
 
     public int num() {
@@ -409,7 +426,7 @@ public class BabyActivity extends AppCompatActivity {
                         comment.message = response.getText().toString().replace("[","").replace("]","");
                         //comment.message = w_answer;
                         if(!comment.message.equals("gotoandroidstudio"))
-                            FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);    //그러나 gotoandroidstudio저장됨Watson말을 저장!?, push는 comment마다 새로운 id를 주기 위해
+                            FirebaseDatabase.getInstance().getReference().child("babyTalk").child(chatRoomUid).child("comments").push().setValue(comment);    //그러나 gotoandroidstudio저장됨Watson말을 저장!?, push는 comment마다 새로운 id를 주기 위해
 
 
                     }
@@ -428,7 +445,7 @@ public class BabyActivity extends AppCompatActivity {
                                 //수정한 부분5
                                 String babyGrowthMessage = BabyGrowthList[dDay-1][num()];
                                 comment.message = babyGrowthMessage;
-                                FirebaseDatabase.getInstance().getReference().child("chatrooms1").child(chatRoomUid).child("comments").push().setValue(comment);    //제대로 된 답변
+                                FirebaseDatabase.getInstance().getReference().child("babyTalk").child(chatRoomUid).child("comments").push().setValue(comment);    //제대로 된 답변
 
                                 outComment.message = babyGrowthMessage;
                                 //w_answer = babyGrowthMessage;
