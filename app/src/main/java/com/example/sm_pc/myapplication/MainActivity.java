@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
+import com.example.sm_pc.myapplication.Hospital.HospitalMainActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
 import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
@@ -36,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
     DatabaseHelper myDb;
     private TextView textName,textDdate, textToday;
     private ImageButton buttonSetting;
-    private Button buttonDodam, buttonBaby, buttonDiary;
+    private Button buttonDodam, buttonBaby, buttonDiary, buttonHospital;
     private ImageView babyPic;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
@@ -57,6 +58,7 @@ public class MainActivity extends AppCompatActivity {
         babyClick();
         diaryClick();
         settingClick();
+        hospitalClick();
     }
 
     private void define(){
@@ -70,6 +72,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDodam = (Button) findViewById(R.id.buttonMainDodam);
         buttonBaby = (Button) findViewById(R.id.buttonMainBaby);
         buttonDiary = (Button) findViewById(R.id.buttonMainDiary);
+        buttonHospital = (Button) findViewById(R.id.buttonMainHospital);
         babyPic = (ImageView) findViewById(R.id.babyImageView);
     }
 
@@ -216,6 +219,16 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void hospitalClick(){
+        buttonHospital.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, HospitalMainActivity.class);
                 startActivity(intent);
             }
         });
