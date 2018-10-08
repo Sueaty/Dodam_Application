@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<android.support.constraint.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,99 +9,116 @@
     android:orientation="vertical"
     android:background="@color/beige" >
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="66dp"
-        android:gravity="center"
-        android:text="User Information"
-        android:textColor="@color/purple"
-        android:textSize="30sp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="로그인 되어 있는 사용자"
-        android:textSize="17sp"
-        android:layout_margin="15dp"/>
-    <TextView
-        android:id="@+id/textUserShowId"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="asdf"
-        android:textSize="22sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight = "20sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="우리아기 태명"
-        android:textSize="17sp"
-        android:layout_margin="15dp" />
-    <TextView
-        android:id="@+id/textUserBabyName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="asdf"
-        android:textSize="22sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight = "20sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="우리아기 출산예정일"
-        android:textSize="17sp"
-        android:layout_margin="15dp" />
-    <TextView
-        android:id="@+id/textUserExpectedDate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="asdf"
-        android:textSize="22sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight = "20sp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="우리아기 태어나기까지 남은 날"
-        android:textSize="17sp"
-        android:layout_margin="15dp" />
-    <TextView
-        android:id="@+id/textUserDdate"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="asdf"
-        android:textSize="22sp"
-        android:layout_marginLeft="20sp"
-        android:layout_marginRight = "20sp"/>
 
     <!--
         병원 푸쉬 알림 받을 건지 물어봐야 하는데 어쩌야 하는지 모르겠다ㅠㅠ
     -->
 
-    <Button
-        android:id="@+id/buttonLogOut"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
+    <ImageView
+        android:id="@+id/backgroundImage"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="로그아웃" />
+        android:layout_marginBottom="11dp"
+        android:layout_marginTop="69dp"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/login_logo"
+        android:visibility="visible"/>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="8dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.66">
+
+        <EditText
+            android:id="@+id/textNewPwd"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:hint="New password"
+            android:textColor="@color/purple"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/textCheckNewPwd"
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:hint="Rewrite new password"
+            android:textColor="@color/purple"
+            android:visibility="invisible" />
+    </LinearLayout>
 
     <Button
-        android:id="@+id/buttonChangePwd"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
+        android:id="@+id/changePasswordButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="비밀번호 변경" />
+        android:text="변경"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.52"
+        />
 
-    <Button
-        android:id="@+id/buttonQuitDodam"
-        android:layout_width="200dp"
-        android:layout_gravity="center"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="탈퇴하기" />
+        android:layout_marginBottom="77dp"
+        android:layout_marginTop="12dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/backgroundImage">
+
+        <Button
+            android:id="@+id/buttonLogOut"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="로그아웃"
+            tools:layout_editor_absoluteX="92dp"
+            tools:layout_editor_absoluteY="362dp" />
+
+        <Button
+            android:id="@+id/buttonChangePwd"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="비밀번호 변경"
+            tools:layout_editor_absoluteX="92dp"
+            tools:layout_editor_absoluteY="410dp" />
+
+        <Button
+            android:id="@+id/buttonQuitDodam"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="탈퇴하기"
+            tools:layout_editor_absoluteX="92dp"
+            tools:layout_editor_absoluteY="469dp" />
+    </LinearLayout>
 
 
-</LinearLayout>
+
+</android.support.constraint.ConstraintLayout>
