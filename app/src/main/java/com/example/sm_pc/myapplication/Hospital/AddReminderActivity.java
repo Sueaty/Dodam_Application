@@ -394,8 +394,8 @@ public class AddReminderActivity extends AppCompatActivity implements com.exampl
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 13);
-        mCalendar.set(Calendar.MINUTE, 23);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 21);
+        mCalendar.set(Calendar.MINUTE, 0);
         mCalendar.set(Calendar.SECOND, 0);
 
         long selectedTimestamp =  mCalendar.getTimeInMillis();
