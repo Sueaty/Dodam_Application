@@ -131,7 +131,7 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     void getMessageList() {
 
         if (chatRoomUid != null) {
-            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("dodamTalk").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
 
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {

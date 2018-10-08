@@ -59,7 +59,7 @@ public class BotActivity extends AppCompatActivity {
 
 //예진이 외
     //private String destinatonUid;
-    public static String destinationUid;//여기까지,, 이거 하울코딩 오타! destination인뎅!!
+    public static String destinationUid;
     private String dodamUid;
 
     public static String chatRoomUid;
@@ -118,10 +118,21 @@ public class BotActivity extends AppCompatActivity {
                         btnSend.setEnabled(false);
                         //FirebaseDatabase.getInstance().getReference().child("chatrooms1").push().setValue(chatBaby);
 
-                        FirebaseDatabase.getInstance().getReference().child("chatrooms").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        FirebaseDatabase.getInstance().getReference().child("dodamTalk").push().setValue(chatModel).addOnSuccessListener(new OnSuccessListener<Void>() {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 checkChatRoom();
+                            }
+                        });
+                        ChatModel.Comment comment = new ChatModel.Comment();
+                        comment.uid = uid;
+                        comment.message = inputMessage.getText().toString();
+                        FirebaseDatabase.getInstance().getReference().child("dodamTalk").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                            @Override
+
+                            public void onComplete(@NonNull Task<Void> task) {
+                                inputMessage.setText("");
                             }
                         });
 
@@ -130,9 +141,8 @@ public class BotActivity extends AppCompatActivity {
 
                         ChatModel.Comment comment = new ChatModel.Comment();
                         comment.uid = uid;
-//예진 외 수정함,,이코드를 sendMessage로 보냄
-                        //comment.message = inputMessage.getText().toString();
-                        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        comment.message = inputMessage.getText().toString();
+                        FirebaseDatabase.getInstance().getReference().child("dodamTalk").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
 
                             @Override
 
@@ -155,7 +165,7 @@ public class BotActivity extends AppCompatActivity {
 
     void  checkChatRoom(){
 
-        FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("dodamTalk").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 for(DataSnapshot item : dataSnapshot.getChildren()){
@@ -182,11 +192,6 @@ public class BotActivity extends AppCompatActivity {
 
     // Sending a message to Watson Conversation Service
     private void sendMessage() {
-//예진 외 수정한거
-        ChatModel.Comment comment = new ChatModel.Comment();
-        comment.uid = uid;
-        comment.message = this.inputMessage.getText().toString().replace("[","").replace("]","");
-        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment);//여기까지
         final String inputmessage = this.inputMessage.getText().toString().trim();
         //Message1 inputMessage = new Message1();
 
@@ -214,7 +219,6 @@ public class BotActivity extends AppCompatActivity {
                     //수정한 부분6
                     ChatModel chatModel = new ChatModel();
                     chatModel.users.put(dodamUid, true);
-//예진 외 수정,,,이걸 밖에(sendMessage 바로 아래)에도 써줌...or 아예 이 밑의 코드를 밖으로 빼는 방법은...??
                     ChatModel.Comment comment = new ChatModel.Comment();    //매번 새로운 comment를 만들어서 거기에 message저장
                     comment.uid = dodamUid;  //이 메시지의 uid는 babyUid로 지정
 
@@ -228,7 +232,7 @@ public class BotActivity extends AppCompatActivity {
 
                         //수정한 부분4
                         comment.message = response.getText().toString().replace("[","").replace("]","");
-                        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment);
+                        FirebaseDatabase.getInstance().getReference().child("dodamTalk").child(chatRoomUid).child("comments").push().setValue(comment);
 
                     }
                     //Message1 outMessage=new Message1();
