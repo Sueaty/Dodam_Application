@@ -209,7 +209,7 @@ public class AddReminderActivity extends AppCompatActivity implements com.exampl
         mDay = dayOfMonth;
         mMonth = monthOfYear;
         mYear = year;
-        mDate = dayOfMonth + "/" + monthOfYear + "/" + year;
+        mDate = year + "년 " + monthOfYear + "월 " + dayOfMonth+"일";
         mDateText.setText(mDate);
     }
 /*
@@ -394,8 +394,8 @@ public class AddReminderActivity extends AppCompatActivity implements com.exampl
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 21);
-        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 12);
+        mCalendar.set(Calendar.MINUTE, 25);
         mCalendar.set(Calendar.SECOND, 0);
 
         long selectedTimestamp =  mCalendar.getTimeInMillis();
@@ -427,25 +427,25 @@ public class AddReminderActivity extends AppCompatActivity implements com.exampl
                         Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(this, getString(R.string.editor_update_reminder_successful),
+                Toast.makeText(getApplicationContext(), "Saved",
                         Toast.LENGTH_SHORT).show();
             }
         }
-
+/*
         // Create a new notification
         if (mActive.equals("true")) {
-            /*
+
             if (mRepeat.equals("true")) {
                 new AlarmScheduler().setRepeatAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri, mRepeatTime);
             } else if (mRepeat.equals("false")) {
                 new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
             }
-*/
+
             new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
             Toast.makeText(this, "Alarm time is " + selectedTimestamp,
                     Toast.LENGTH_LONG).show();
         }
-
+*/
         // Create toast to confirm new reminder
         Toast.makeText(getApplicationContext(), "Saved",
                 Toast.LENGTH_SHORT).show();
