@@ -36,27 +36,27 @@ import java.util.Map;
 public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     private int SELF = 100;
-            //private ArrayList<Message> messageArrayList;    //position
-            private List<ChatModel.Comment> comments = new ArrayList<>();
+    //private ArrayList<Message> messageArrayList;    //position
+    private List<ChatModel.Comment> comments = new ArrayList<>();
 
-            private String uid;
-            private ImageButton btnSend;
-            private String chatRoomUid;
-            private String destinationUid;
-            private UserModel destinationUserModel;
-            private String babyUid;
-            private DatabaseReference databaseReference;
-            private ValueEventListener valueEventListener;
+    private String uid;
+    private ImageButton btnSend;
+    private String chatRoomUid;
+    private String destinationUid;
+    private UserModel destinationUserModel;
+    private String babyUid;
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
 
-            private RecyclerView recyclerView;
-            public EditText msg;
+    private RecyclerView recyclerView;
+    public EditText msg;
 
-            public class ViewHolder extends RecyclerView.ViewHolder {
-                public TextView message;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        public TextView message;
 
-                //밑에서 ViewHolder을 만들어 줘서 생긴 것, alt+enter를 해줘서 생성됨...?
-                public ViewHolder(View view) {
-                    super(view);
+        //밑에서 ViewHolder을 만들어 줘서 생긴 것, alt+enter를 해줘서 생성됨...?
+        public ViewHolder(View view) {
+            super(view);
             message = (TextView) itemView.findViewById(R.id.message);   //message라는 TextView(사용자가 입렵함)의 내용을 message에 담자
             btnSend = (ImageButton) itemView.findViewById(R.id.btn_send);
         }
@@ -81,13 +81,12 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
-           }
+            }
 
         });
 
         getMessageList();   //오류가 뜨는 이유: LoginActivity의 chatRoomUid에 내용이 저장되지 않은 상태에서 getMessageList호출
     }
-
 
 
     @Override
@@ -178,7 +177,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
             });
 
-    }
+        }
 
     }
 
