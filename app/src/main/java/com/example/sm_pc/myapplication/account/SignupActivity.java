@@ -1,6 +1,7 @@
 package com.example.sm_pc.myapplication.account;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,21 +14,28 @@ import android.widget.ProgressBar;
 import android.widget.RadioButton;
 import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.DodamBot.BotActivity;
 import com.example.sm_pc.myapplication.R;
+import com.example.sm_pc.myapplication.model.UserModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 
 public class SignupActivity extends AppCompatActivity {
 
-    private EditText inputEmail, inputPassword, momHeight, momWeight;
+    private EditText inputEmail, inputPassword, momHeight, momWeight, findMomEmail;
     private Button btnSignUp, btnFind;
     private RadioButton btnMom, btnDad;
     private ProgressBar progressBar;
@@ -54,7 +62,9 @@ public class SignupActivity extends AppCompatActivity {
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
         momHeight = (EditText) findViewById(R.id.textMomHeight);
         momWeight = (EditText) findViewById(R.id.textMomWeight);
+        findMomEmail = (EditText) findViewById(R.id.findMomEmail);
 
+        findMomEmail.setVisibility(View.GONE);
         btnFind.setVisibility(View.GONE);
         momHeight.setVisibility(View.GONE);
         momWeight.setVisibility(View.GONE);
@@ -68,6 +78,7 @@ public class SignupActivity extends AppCompatActivity {
 
                 final String email = inputEmail.getText().toString().trim();
                 String password = inputPassword.getText().toString().trim();
+
 
                 if(TextUtils.isEmpty(email) || TextUtils.isEmpty(password)){
                     Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
@@ -121,15 +132,19 @@ public class SignupActivity extends AppCompatActivity {
                                 }
 
                                 else if (task.isSuccessful() && btnDad.isChecked()) {
+                                    String momEmail = findMomEmail.getText().toString().trim();
+
                                     HashMap<String, String> dadProfile = new HashMap<>();
                                         dadProfile.put("uid", userUID);
                                     dadProfile.put("Email", email);
                                     dadProfile.put("RegisterDate", registerDate);
+                                    dadProfile.put("momEmail", momEmail);
 
                                     mRootref.child("Setting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
+
                                                 Toast.makeText(SignupActivity.this, "아빠 안녕?", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                                 startActivity(intent);
@@ -156,8 +171,10 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 btnFind.setVisibility(View.GONE);
+                findMomEmail.setVisibility(View.GONE);
                 momHeight.setVisibility(View.VISIBLE);
                 momWeight.setVisibility(View.VISIBLE);
+
             }
         });
 
@@ -166,13 +183,22 @@ public class SignupActivity extends AppCompatActivity {
         btnDad.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+
+                ifBtnFindChecked();
                 btnFind.setVisibility(View.VISIBLE);
                 momHeight.setVisibility(View.GONE);
                 momWeight.setVisibility(View.GONE);
             }
         });
     }
-
+    public void ifBtnFindChecked() {
+        btnFind.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                findMomEmail.setVisibility(View.VISIBLE);
+            }
+        });
+    }
 
 
     @Override
