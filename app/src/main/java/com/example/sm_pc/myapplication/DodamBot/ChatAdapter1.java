@@ -28,16 +28,14 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private List<ChatModel.Comment> comments = new ArrayList<>();
 
     private String uid;
-    private ImageButton btnSend;
+    private EditText inputMessage;
     private String chatRoomUid;
-    private String destinatonUid;
+    private String destinationUid;
     private UserModel destinationUserModel;
     private String dodamUid;
-    private DatabaseReference databaseReference;
-    private ValueEventListener valueEventListener;
 
-    private RecyclerView recyclerView;
-    public EditText msg;
+
+    public static ChatModel.Comment first_com = new ChatModel.Comment();
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         public TextView message;
@@ -45,24 +43,19 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         public ViewHolder(View view) {
             super(view);
             message = (TextView) itemView.findViewById(R.id.message);
-            btnSend = (ImageButton) itemView.findViewById(R.id.btn_send);
-        }
-        public String getMessage(String m){
-            return m;
+            //btnSend = (ImageButton) itemView.findViewById(R.id.btn_send);
         }
 
     }
 
     public ChatAdapter1(List<ChatModel.Comment> messageArrayList) {
         this.comments = messageArrayList;
-        //List<ChatModel.Comment> comments = new ArrayList<>();
-        //comments = messageArrayList<>();
         chatRoomUid = BotActivity.getRoomUid();
 //예진이 외 수정한거
-        destinatonUid = BotActivity.getDestinationUid();//여기까지
+        destinationUid = BotActivity.getDestinationUid();//여기까지
         dodamUid = "dodam";
 
-        FirebaseDatabase.getInstance().getReference().child("users").child(destinatonUid).addListenerForSingleValueEvent(new ValueEventListener() {
+        FirebaseDatabase.getInstance().getReference().child("users").child(destinationUid).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 destinationUserModel = dataSnapshot.getValue(UserModel.class);
@@ -149,6 +142,10 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
                 }
             });
         }
+    }
+
+    public static String getFirst() {
+        return first_com.message;
     }
 
     @Override

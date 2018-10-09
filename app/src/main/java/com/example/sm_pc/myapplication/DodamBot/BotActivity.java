@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.model.ChatModel;
 import com.example.sm_pc.myapplication.model.UserModel;
@@ -57,17 +58,21 @@ public class BotActivity extends AppCompatActivity {
 
     private String uid;
 
-//예진이 외
+    //예진이 외
     //private String destinatonUid;
     public static String destinationUid;
     private String dodamUid;
+    String inputmessage;
+    int NUM = 0;
 
     public static String chatRoomUid;
     //public static String RoomUid = "";
+    public ChatModel.Comment temp = new ChatModel.Comment();
 
     //private String babyGrowthMessage;
     private DatabaseReference databaseReference;
     private ValueEventListener valueEventListener;
+
 
 
     @Override
@@ -79,10 +84,9 @@ public class BotActivity extends AppCompatActivity {
         dodamUid = "dodam";
 //예진말고 수정한 부분
         //destinationUid가 없는 경우는 어떡하지??
+        //destinationUid = MainActivity.getDestinationUid();
         destinationUid = getIntent().getStringExtra("destinationUid");
-        //destinatonUid = "Jcm43qnZ0gfiha4NJjBx9401STE3";//상대방이 whgusdk98
-        //destinatonUid = "JRPBQZMjewhWp66q5lWq8MxCQlF2";//상대방이 whgusdk
-        destinationUid = "8HIp1rEZLOagLQXNynoE8PDLzBq2";//상대방이 dad
+        destinationUid = "P98wBhdBf6dLyXQwUndiNNBVawF2";//상대방이 whgusdk98
         //여기까지
 
         inputMessage = (EditText) findViewById(R.id.message);
@@ -111,7 +115,6 @@ public class BotActivity extends AppCompatActivity {
                     chatModel.users.put(uid,true);  //true값을 가진 uid
 //예진이가 한거 외
                     chatModel.users.put(destinationUid,true);
-                    checkChatRoom();
                     //여기까지
                     if(chatRoomUid == null){
 
@@ -122,17 +125,9 @@ public class BotActivity extends AppCompatActivity {
                             @Override
                             public void onSuccess(Void aVoid) {
                                 checkChatRoom();
-                            }
-                        });
-                        ChatModel.Comment comment = new ChatModel.Comment();
-                        comment.uid = uid;
-                        comment.message = inputMessage.getText().toString();
-                        FirebaseDatabase.getInstance().getReference().child("dodamTalk").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
-
-                            @Override
-
-                            public void onComplete(@NonNull Task<Void> task) {
-                                inputMessage.setText("");
+                                temp.message = inputmessage;
+                                temp.uid = uid;
+                                NUM ++;
                             }
                         });
 
@@ -184,7 +179,7 @@ public class BotActivity extends AppCompatActivity {
     public static String getRoomUid() {
         return chatRoomUid;
     }
-//예진이 수정외
+    //예진이 수정외
     public static String getDestinationUid() {
         return destinationUid;
     }
@@ -192,7 +187,7 @@ public class BotActivity extends AppCompatActivity {
 
     // Sending a message to Watson Conversation Service
     private void sendMessage() {
-        final String inputmessage = this.inputMessage.getText().toString().trim();
+        inputmessage = this.inputMessage.getText().toString().trim();
         //Message1 inputMessage = new Message1();
 
         //수정한 부분
@@ -229,6 +224,10 @@ public class BotActivity extends AppCompatActivity {
                     {
                         context.clear();
                         context = response.getContext();
+                        if(NUM == 1){
+                            FirebaseDatabase.getInstance().getReference().child("dodamTalk").child(chatRoomUid).child("comments").push().setValue(temp);
+                            NUM = 10;
+                        }
 
                         //수정한 부분4
                         comment.message = response.getText().toString().replace("[","").replace("]","");
@@ -295,4 +294,3 @@ public class BotActivity extends AppCompatActivity {
 
 
 }
-
