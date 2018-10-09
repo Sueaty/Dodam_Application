@@ -108,13 +108,13 @@ public class SignupActivity extends AppCompatActivity {
                                     }
 
                                     HashMap<String, String> momProfile = new HashMap<>();
-                                    momProfile.put("uid", userUID);
-                                    momProfile.put("Email", email);
-                                    momProfile.put("RegisterDate", registerDate);
-                                    momProfile.put("Height", textMomHeight);
-                                    momProfile.put("Weight", textMomWeight);
+                                        momProfile.put("uid", userUID);
+                                        momProfile.put("Email", email);
+                                        momProfile.put("RegisterDate", registerDate);
+                                        momProfile.put("Height", textMomHeight);
+                                        momProfile.put("Weight", textMomWeight);
 
-                                    mRootref.child("MomSetting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    mRootref.child("Setting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
@@ -134,12 +134,12 @@ public class SignupActivity extends AppCompatActivity {
                                     String momEmail = findMomEmail.getText().toString().trim();
 
                                     HashMap<String, String> dadProfile = new HashMap<>();
-                                    dadProfile.put("uid", userUID);
-                                    dadProfile.put("Email", email);
-                                    dadProfile.put("RegisterDate", registerDate);
-                                    dadProfile.put("momEmail", momEmail);
+                                        dadProfile.put("uid", userUID);
+                                        dadProfile.put("Email", email);
+                                        dadProfile.put("RegisterDate", registerDate);
+                                        dadProfile.put("momEmail", momEmail);
 
-                                    mRootref.child("DadSetting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    mRootref.child("Setting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
