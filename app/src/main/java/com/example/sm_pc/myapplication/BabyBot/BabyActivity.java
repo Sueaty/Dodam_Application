@@ -116,7 +116,6 @@ public class BabyActivity extends AppCompatActivity {
                     chatBaby.users.put(babyUid,true);
 
                     chatModel.users.put(destinationUid,true);
-                    checkChatRoom();
 
                     //chatModel.users.put(destinatonUid,true);
 
@@ -162,13 +161,13 @@ public class BabyActivity extends AppCompatActivity {
 
                     }
                     sendMessage();
+                }
             }
-        }
 
-    }); //setOnClickListener
-    checkChatRoom();
+        }); //setOnClickListener
+        checkChatRoom();
 
-}
+    }
     void  checkChatRoom(){
 
         FirebaseDatabase.getInstance().getReference().child("babyTalk").orderByChild("users/"+uid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -256,7 +255,7 @@ public class BabyActivity extends AppCompatActivity {
         BabyGrowthList[5][0] = "저는 아직까지 사람보다 올챙이를 닮았어요ㅎㅎ 몸의 주요 기관이 자라기 시작했어요><";
         BabyGrowthList[5][1] = "제 심장은 지금 일반 사람들보다 느리게 뛰고있고 성장하면서 심장 박동수가 증가해용!!ㅎㅎ";
         BabyGrowthList[5][2] = "뇌와 척수의 신경세포의 80%정도가 만들어지고 있어요!!ㅎㅎㅎ";
-        
+
         BabyGrowthList[6][0] = "드디어 사람의 형태를 갖추게 되었어요! 키와 체중이 각각 약 2cm, 4g 정도로 지느러미 같은 손가락, 발가락을 지닌 2등신이랍니당^0^";
         BabyGrowthList[6][1] = "귀로 자랄 부분은 작은 구멍처럼, 눈과 콧구멍은 검은 점처럼 보인답니다>_<";
         BabyGrowthList[6][2] = "저의 팔 다리로 자라날 부분은 봉우리처럼 솟아나 있답니다!!ㅎㅎ";
