@@ -108,33 +108,33 @@ public class SignupActivity extends AppCompatActivity {
                                     }
 
                                     HashMap<String, String> momProfile = new HashMap<>();
-                                        momProfile.put("uid", userUID);
-                                        momProfile.put("Email", email);
-                                        momProfile.put("RegisterDate", registerDate);
-                                        momProfile.put("Height", textMomHeight);
-                                        momProfile.put("Weight", textMomWeight);
+                                    momProfile.put("uid", userUID);
+                                    momProfile.put("Email", email);
+                                    momProfile.put("RegisterDate", registerDate);
+                                    momProfile.put("Height", textMomHeight);
+                                    momProfile.put("Weight", textMomWeight);
 
-                                        mRootref.child("MomSetting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                            @Override
-                                            public void onComplete(@NonNull Task<Void> task) {
-                                                if(task.isSuccessful()){
-                                                    Toast.makeText(SignupActivity.this, "엄마 안녕?", Toast.LENGTH_SHORT).show();
-                                                    Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
-                                                    startActivity(intent);
-                                                    finish();
-                                                } else{
-                                                    Toast.makeText(SignupActivity.this, "가입 오류!\n다시 시도해주세요!", Toast.LENGTH_SHORT).show();
-                                                    return;
-                                                }
+                                    mRootref.child("MomSetting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<Void> task) {
+                                            if(task.isSuccessful()){
+                                                Toast.makeText(SignupActivity.this, "엄마 안녕?", Toast.LENGTH_SHORT).show();
+                                                Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
+                                                startActivity(intent);
+                                                finish();
+                                            } else{
+                                                Toast.makeText(SignupActivity.this, "가입 오류!\n다시 시도해주세요!", Toast.LENGTH_SHORT).show();
+                                                return;
                                             }
-                                        });
+                                        }
+                                    });
                                 }
 
                                 else if (task.isSuccessful() && btnDad.isChecked()) {
                                     String momEmail = findMomEmail.getText().toString().trim();
 
                                     HashMap<String, String> dadProfile = new HashMap<>();
-                                        dadProfile.put("uid", userUID);
+                                    dadProfile.put("uid", userUID);
                                     dadProfile.put("Email", email);
                                     dadProfile.put("RegisterDate", registerDate);
                                     dadProfile.put("momEmail", momEmail);
@@ -206,4 +206,3 @@ public class SignupActivity extends AppCompatActivity {
         progressBar.setVisibility(View.GONE);
     }
 }
-

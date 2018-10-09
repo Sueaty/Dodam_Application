@@ -18,6 +18,7 @@ import com.example.sm_pc.myapplication.BabyBot.BabyActivity;
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
 import com.example.sm_pc.myapplication.Hospital.HospitalMainActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
+import com.example.sm_pc.myapplication.account.SignupActivity;
 import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
 import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
 import com.example.sm_pc.myapplication.setting.Baby.DatabaseHelper;
@@ -52,6 +53,11 @@ public class MainActivity extends AppCompatActivity {
         updateDday(); // update today's d-day
         updateTodaydate(); // update today's date
         textBabyName(); // set text of 'BABY NAME'
+
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
 
         // click and action methods
         dodamClick();
