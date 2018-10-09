@@ -79,7 +79,11 @@ public class BotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot);
-
+        
+        if(uid != FirebaseAuth.getInstance().getCurrentUser().getUid()) {
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            checkChatRoom();
+        }
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();//채팅을 거는 아이디
         dodamUid = "dodam";
 //예진말고 수정한 부분
