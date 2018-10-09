@@ -32,7 +32,9 @@ import com.example.sm_pc.myapplication.R;
 
 import java.util.Calendar;
 
-public class AddReminderActivity extends AppCompatActivity implements com.example.sm_pc.myapplication.Hospital.DatePicker.DatePickerDialog.OnDateSetListener, LoaderManager.LoaderCallbacks<Cursor> {
+public class AddReminderActivity extends AppCompatActivity
+        implements com.example.sm_pc.myapplication.Hospital.DatePicker.DatePickerDialog.OnDateSetListener,
+        LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final int EXISTING_VEHICLE_LOADER = 0;
 
@@ -394,8 +396,8 @@ public class AddReminderActivity extends AppCompatActivity implements com.exampl
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 21);
-        mCalendar.set(Calendar.MINUTE, 0);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 9);
+        mCalendar.set(Calendar.MINUTE, 33);
         mCalendar.set(Calendar.SECOND, 0);
 
         long selectedTimestamp =  mCalendar.getTimeInMillis();

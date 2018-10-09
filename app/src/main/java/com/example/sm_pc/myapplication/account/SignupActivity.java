@@ -86,7 +86,6 @@ public class SignupActivity extends AppCompatActivity {
                                 String registerDate = DateFormat.getDateInstance().format(calendar.getTime());
                                 String userUID = mAuth.getCurrentUser().getUid();
 
-
                                 if (task.isSuccessful() && btnMom.isChecked()){
 
                                     String textMomHeight = momHeight.getText().toString().trim();
@@ -104,7 +103,7 @@ public class SignupActivity extends AppCompatActivity {
                                         momProfile.put("Height", textMomHeight);
                                         momProfile.put("Weight", textMomWeight);
 
-                                        mRootref.child("Setting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                        mRootref.child("MomSetting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
@@ -123,10 +122,10 @@ public class SignupActivity extends AppCompatActivity {
                                 else if (task.isSuccessful() && btnDad.isChecked()) {
                                     HashMap<String, String> dadProfile = new HashMap<>();
                                         dadProfile.put("uid", userUID);
-                                    dadProfile.put("Email", email);
-                                    dadProfile.put("RegisterDate", registerDate);
+                                        dadProfile.put("Email", email);
+                                        dadProfile.put("RegisterDate", registerDate);
 
-                                    mRootref.child("Setting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    mRootref.child("DadSetting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){

@@ -78,8 +78,7 @@
     <string name="mdtp_pm">pm</string>
 
 
-    <string name="app_name">AlarmReminder</string>
-    <!--<string name="app_name">FirebaseLoginApp</string>-->
+    <string name="app_name">Dodam Application</string>
     <string name="action_sign_in_short">Register</string>
     <string name="email">Email</string>
     <string name="minimum_password">Password too short, enter minimum 6 characters!</string>
