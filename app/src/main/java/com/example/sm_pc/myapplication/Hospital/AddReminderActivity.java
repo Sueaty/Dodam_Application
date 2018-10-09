@@ -175,7 +175,7 @@ public class AddReminderActivity extends AppCompatActivity
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.title_activity_add_reminder);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(false);
     }
 
     @Override
@@ -214,25 +214,7 @@ public class AddReminderActivity extends AppCompatActivity
         mDate = year + "년 " + monthOfYear + "월 " + dayOfMonth+"일";
         mDateText.setText(mDate);
     }
-/*
-    // On clicking the active button
-    public void selectFab1(View v) {
-        mFAB1 = (FloatingActionButton) findViewById(R.id.starred1);
-        mFAB1.setVisibility(View.GONE);
-        mFAB2 = (FloatingActionButton) findViewById(R.id.starred2);
-        mFAB2.setVisibility(View.VISIBLE);
-        mActive = "true";
-    }
 
-    // On clicking the inactive button
-    public void selectFab2(View v) {
-        mFAB2 = (FloatingActionButton) findViewById(R.id.starred2);
-        mFAB2.setVisibility(View.GONE);
-        mFAB1 = (FloatingActionButton) findViewById(R.id.starred1);
-        mFAB1.setVisibility(View.VISIBLE);
-        mActive = "false";
-    }
-*/
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu options from the res/menu/menu_editor.xml file.
@@ -396,8 +378,8 @@ public class AddReminderActivity extends AppCompatActivity
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 9);
-        mCalendar.set(Calendar.MINUTE, 33);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 21);
+        mCalendar.set(Calendar.MINUTE, 38);
         mCalendar.set(Calendar.SECOND, 0);
 
         long selectedTimestamp =  mCalendar.getTimeInMillis();
@@ -433,21 +415,21 @@ public class AddReminderActivity extends AppCompatActivity
                         Toast.LENGTH_SHORT).show();
             }
         }
-/*
+
         // Create a new notification
         if (mActive.equals("true")) {
-
+/*
             if (mRepeat.equals("true")) {
                 new AlarmScheduler().setRepeatAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri, mRepeatTime);
             } else if (mRepeat.equals("false")) {
                 new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
             }
-
+*/
             new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
             Toast.makeText(this, "Alarm time is " + selectedTimestamp,
                     Toast.LENGTH_LONG).show();
         }
-*/
+
         // Create toast to confirm new reminder
         Toast.makeText(getApplicationContext(), "Saved",
                 Toast.LENGTH_SHORT).show();
