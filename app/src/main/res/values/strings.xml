@@ -193,4 +193,5 @@
 
     <string name="reminder_title">AlarmReminder</string>
 
+    <string name="alarm_intro">병원 방문 일정을 등록하고, 건강 상태를 기록하세요</string>
 </resources>
