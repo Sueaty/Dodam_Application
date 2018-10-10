@@ -82,10 +82,6 @@ public class BabyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby);
         //수정한 부분2
-        if(uid != FirebaseAuth.getInstance().getCurrentUser().getUid()) {
-            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            checkChatRoom();
-        }
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();//채팅을 거는 아이디
         babyUid = "Baby";
         destinationUid = getIntent().getStringExtra("destinationUid");
