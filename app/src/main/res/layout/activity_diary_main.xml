@@ -10,7 +10,7 @@
         android:id="@+id/diary_main_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/orange"
+        android:background="@color/beige"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -21,7 +21,10 @@
         android:layout_height="504dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="63dp"></android.support.v7.widget.RecyclerView>
+        android:layout_marginTop="63dp"
+        android:background="@color/beige">
+
+    </android.support.v7.widget.RecyclerView>
 
 
 </RelativeLayout>

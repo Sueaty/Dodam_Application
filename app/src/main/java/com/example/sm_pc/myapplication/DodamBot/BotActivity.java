@@ -74,6 +74,7 @@ public class BotActivity extends AppCompatActivity {
     private ValueEventListener valueEventListener;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -120,7 +121,6 @@ public class BotActivity extends AppCompatActivity {
                     chatModel.users.put(uid,true);  //true값을 가진 uid
 //예진이가 한거 외
                     chatModel.users.put(destinationUid,true);
-                    //checkChatRoom();
                     //여기까지
                     if(chatRoomUid == null){
 
@@ -300,4 +300,3 @@ public class BotActivity extends AppCompatActivity {
 
 
 }
-

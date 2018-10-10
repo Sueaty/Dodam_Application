@@ -18,6 +18,8 @@
     <color name="lbl_name">#333333</color>
     <color name="btn_logut_bg">#ff6861</color>
 
+
+
     <color name="purple">#524656</color>
     <color name="red">#CF4747</color>
     <color name="orange">#EA7A58</color>
@@ -29,10 +31,9 @@
 
 
     <color name="bg_bubble_self">#79d1bf</color>
-    <color name="bg_bubble_dodam">#efefef</color>
 
 
-/*Datepicker*/
+<!--Datepicker-->
     <color name="mdtp_white">#ffffff</color>
     <color name="mdtp_background_color">@color/mdtp_white</color>
     <color name="mdtp_circle_background">@color/mdtp_background_color</color>
