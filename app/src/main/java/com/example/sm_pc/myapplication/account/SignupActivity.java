@@ -113,6 +113,7 @@ public class SignupActivity extends AppCompatActivity {
                                         momProfile.put("RegisterDate", registerDate);
                                         momProfile.put("Height", textMomHeight);
                                         momProfile.put("Weight", textMomWeight);
+                                        momProfile.put("LoverEmail", "null");
 
                                     mRootref.child("Setting").child(userUID).setValue(momProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
@@ -131,18 +132,24 @@ public class SignupActivity extends AppCompatActivity {
                                 }
 
                                 else if (task.isSuccessful() && btnDad.isChecked()) {
-                                    String momEmail = findMomEmail.getText().toString().trim();
+                                    String LoverEmail = findMomEmail.getText().toString().trim();
+
+                                    if(TextUtils.isEmpty(LoverEmail)){
+                                        Toast.makeText(getApplicationContext(), "빠짐없이 입력해주세요", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
 
                                     HashMap<String, String> dadProfile = new HashMap<>();
                                         dadProfile.put("uid", userUID);
                                         dadProfile.put("Email", email);
                                         dadProfile.put("RegisterDate", registerDate);
-                                        dadProfile.put("momEmail", momEmail);
+                                        dadProfile.put("LoverEmail", LoverEmail);
 
                                     mRootref.child("Setting").child(userUID).setValue(dadProfile).addOnCompleteListener(new OnCompleteListener<Void>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
+
 
                                                 Toast.makeText(SignupActivity.this, "아빠 안녕?", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);

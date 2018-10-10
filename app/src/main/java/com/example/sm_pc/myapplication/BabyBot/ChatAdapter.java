@@ -10,6 +10,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.example.sm_pc.myapplication.DodamBot.BotActivity;
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.model.ChatModel;
 import com.example.sm_pc.myapplication.model.UserModel;
@@ -70,7 +71,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         //List<ChatModel.Comment> comments = new ArrayList<>();
         //comments = messageArrayList<>();
         chatRoomUid = BabyActivity.getRoomUid();
-        destinationUid = BabyActivity.getDestinationUid();
+        destinationUid = MainActivity.getDestinationUid();
         babyUid = "Baby";
 
         FirebaseDatabase.getInstance().getReference().child("users").child(destinationUid).addListenerForSingleValueEvent(new ValueEventListener() {

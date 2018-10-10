@@ -8,8 +8,10 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -20,21 +22,30 @@ import com.example.sm_pc.myapplication.Hospital.HospitalMainActivity;
 import com.example.sm_pc.myapplication.account.LoginActivity;
 import com.example.sm_pc.myapplication.account.SignupActivity;
 import com.example.sm_pc.myapplication.diary.DiaryMainActivity;
+import com.example.sm_pc.myapplication.model.ChatModel;
+import com.example.sm_pc.myapplication.model.UserModel;
 import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
 import com.example.sm_pc.myapplication.setting.Baby.DatabaseHelper;
 import com.example.sm_pc.myapplication.setting.SettingActivity;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
+    private static String LoverEmail;
+    public static String destinationUid;
     DatabaseHelper myDb;
     private TextView textName,textDdate, textToday;
     private ImageButton buttonSetting;
@@ -42,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private ImageView babyPic;
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
-
+    private String myEmail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +64,70 @@ public class MainActivity extends AppCompatActivity {
         updateDday(); // update today's d-day
         updateTodaydate(); // update today's date
         textBabyName(); // set text of 'BABY NAME'
+
+        String userUID = mAuth.getCurrentUser().getUid();
+        mRootref.child("Setting").child(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                LoverEmail = dataSnapshot.child("LoverEmail").getValue().toString();
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+
+        });
+
+        //LoverEmail = "mom@naver.com";
+        destinationUid = "null";
+
+        myEmail = mAuth.getCurrentUser().getEmail();
+        FirebaseDatabase.getInstance().getReference().child("Setting").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    String compareEmail = snapshot.child("Email").getValue().toString();
+                    if(compareEmail.equals(LoverEmail)){
+                        destinationUid = snapshot.child("uid").getValue().toString();
+                        FirebaseDatabase.getInstance().getReference().child("Setting").child(destinationUid).child("LoverEmail").setValue(myEmail);
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+
+/*
+      if(!(TextUtils.isEmpty(momEmail))){
+            final List<UserModel> userModels;
+            userModels = new ArrayList<>();
+            final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            //사용자 firebase에서 불러옴
+            FirebaseDatabase.getInstance().getReference().child("MomSetting").child("momEmail").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    userModels.clear();//새로고침할때 필요
+                    for(DataSnapshot snapshot :dataSnapshot.getChildren()){
+                        UserModel userModel = snapshot.getValue(UserModel.class);
+                        if(userModel.uid.equals(myUid)){
+                            momEmail = dataSnapshot.getValue(UserModel.class);
+                            continue;
+                        }
+                        else if(userModel.uid.equals(myUid)){ Intent intent = new Intent();
+                        intent.putExtra("destinationUid",userModels.uid);
+                        }
+                        userModels.add(userModel);
+                    }
+                        //notifyDataSetChanged();//새로고침
+                }
+                @Override
+              public void onCancelled(DatabaseError databaseError) {
+                    }
+                    });
+            }*/
+
 
         if (mAuth.getCurrentUser() == null) {
             startActivity(new Intent(MainActivity.this, LoginActivity.class));
@@ -65,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
         diaryClick();
         settingClick();
         hospitalClick();
+    }
+    public static String getDestinationUid() {
+        return destinationUid;
     }
 
     private void define(){
@@ -166,6 +244,8 @@ public class MainActivity extends AppCompatActivity {
                             Intent intent = new Intent(MainActivity.this, BabyCreateActivity.class);
                             startActivity(intent);
                         }
+
+
                     });
                     checkBaby.setPositiveButton("로그아웃", null);
                     AlertDialog alert = checkBaby.create();

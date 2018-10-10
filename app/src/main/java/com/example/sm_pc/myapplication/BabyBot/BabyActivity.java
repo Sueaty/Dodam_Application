@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.model.ChatModel;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
@@ -82,11 +83,15 @@ public class BabyActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby);
         //수정한 부분2
+        if(uid != FirebaseAuth.getInstance().getCurrentUser().getUid()) {
+            uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            checkChatRoom();
+        }
         uid = FirebaseAuth.getInstance().getCurrentUser().getUid();//채팅을 거는 아이디
         babyUid = "Baby";
-        destinationUid = getIntent().getStringExtra("destinationUid");
-        destinationUid = "P98wBhdBf6dLyXQwUndiNNBVawF2";
-
+        //destinationUid = getIntent().getStringExtra("destinationUid");
+        //destinationUid = "70Zg00IGY5ZmwjPSt9nfWo9Jfh03";
+        destinationUid = MainActivity.getDestinationUid();
         inputMessage = (EditText) findViewById(R.id.message);
         //EditText 에 사용자가 입력한 메시지를 받아와서 inputMessage 에 저장!!!!!!
         btnSend = (ImageButton) findViewById(R.id.btn_send);
