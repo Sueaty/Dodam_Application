@@ -86,7 +86,7 @@ public class ChatAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         });
 
-        getMessageList();   //오류가 뜨는 이유: LoginActivity의 chatRoomUid에 내용이 저장되지 않은 상태에서 getMessageList호출
+        //getMessageList();   //오류가 뜨는 이유: LoginActivity의 chatRoomUid에 내용이 저장되지 않은 상태에서 getMessageList호출
     }
 
 
