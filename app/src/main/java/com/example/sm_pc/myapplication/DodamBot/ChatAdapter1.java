@@ -1,5 +1,6 @@
 package com.example.sm_pc.myapplication.DodamBot;
 
+import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.model.ChatModel;
 import com.example.sm_pc.myapplication.model.UserModel;
@@ -52,7 +54,7 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
         this.comments = messageArrayList;
         chatRoomUid = BotActivity.getRoomUid();
 //예진이 외 수정한거
-        destinationUid = BotActivity.getDestinationUid();//여기까지
+        destinationUid = MainActivity.getDestinationUid();//여기까지
         dodamUid = "dodam";
 
         FirebaseDatabase.getInstance().getReference().child("users").child(destinationUid).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -67,7 +69,7 @@ public class ChatAdapter1 extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         });
 
-        getMessageList();   //오류가 뜨는 이유: LoginActivity의 chatRoomUid에 내용이 저장되지 않은 상태에서 getMessageList호출
+        //getMessageList();   //오류가 뜨는 이유: LoginActivity의 chatRoomUid에 내용이 저장되지 않은 상태에서 getMessageList호출
     }
 
 

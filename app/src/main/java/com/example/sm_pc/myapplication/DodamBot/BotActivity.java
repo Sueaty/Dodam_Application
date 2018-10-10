@@ -58,7 +58,7 @@ public class BotActivity extends AppCompatActivity {
 
     private String uid;
 
-    //예진이 외
+//예진이 외
     //private String destinatonUid;
     public static String destinationUid;
     private String dodamUid;
@@ -79,7 +79,7 @@ public class BotActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bot);
-        
+
         if(uid != FirebaseAuth.getInstance().getCurrentUser().getUid()) {
             uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
             checkChatRoom();
@@ -88,9 +88,11 @@ public class BotActivity extends AppCompatActivity {
         dodamUid = "dodam";
 //예진말고 수정한 부분
         //destinationUid가 없는 경우는 어떡하지??
-        //destinationUid = MainActivity.getDestinationUid();
-        destinationUid = getIntent().getStringExtra("destinationUid");
-        destinationUid = "P98wBhdBf6dLyXQwUndiNNBVawF2";//상대방이 whgusdk98
+        destinationUid = MainActivity.getDestinationUid();
+        //destinationUid = getIntent().getStringExtra("destinationUid");
+        //destinationUid = "JrvDaA7EDYdzWRxwYSKdfLGoJMQ2";
+        //destinationUid = "JRPBQZMjewhWp66q5lWq8MxCQlF2";//상대방이 whgusdk
+        //destinationUid = "8HIp1rEZLOagLQXNynoE8PDLzBq2";//상대방이 dad
         //여기까지
 
         inputMessage = (EditText) findViewById(R.id.message);
