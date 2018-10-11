@@ -36,9 +36,11 @@ import java.util.List;
 public class SignupActivity extends AppCompatActivity {
 
     private EditText inputEmail, inputPassword, momHeight, momWeight, findMomEmail;
-    private Button btnSignUp, btnFind;
+    private Button btnSignUp, btnFind, btnFindMom;
     private RadioButton btnMom, btnDad;
     private ProgressBar progressBar;
+
+    public String destinationUid;
 
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
@@ -57,6 +59,7 @@ public class SignupActivity extends AppCompatActivity {
         inputPassword = (EditText) findViewById(R.id.password);
         btnSignUp = (Button) findViewById(R.id.sign_up_button);
         btnFind = (Button) findViewById(R.id.findButton);
+        btnFindMom = (Button) findViewById(R.id.buttonFindMom);
         btnMom = (RadioButton) findViewById(R.id.momButton);
         btnDad = (RadioButton) findViewById(R.id.dadButton);
         progressBar = (ProgressBar) findViewById(R.id.progressBar);
@@ -64,13 +67,57 @@ public class SignupActivity extends AppCompatActivity {
         momWeight = (EditText) findViewById(R.id.textMomWeight);
         findMomEmail = (EditText) findViewById(R.id.findMomEmail);
 
+
         findMomEmail.setVisibility(View.GONE);
         btnFind.setVisibility(View.GONE);
+        btnFindMom.setVisibility(View.GONE);
         momHeight.setVisibility(View.GONE);
         momWeight.setVisibility(View.GONE);
 
         ifMomChecked();
         ifDadChecked();
+
+        btnFindMom.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
+/*
+
+        destinationUid = "null";
+
+        myEmail = mAuth.getCurrentUser().getEmail();
+        FirebaseDatabase.getInstance().getReference().child("Setting").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    String compareEmail = snapshot.child("Email").getValue().toString();
+                    if(compareEmail.equals(LoverEmail)){
+                        destinationUid = snapshot.child("uid").getValue().toString();
+                        FirebaseDatabase.getInstance().getReference().child("Setting").child(destinationUid).child("LoverEmail").setValue(myEmail);
+                        break;
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+            }
+        });
+
+  */
+
+
+
+
+
+
+
+
+
 
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -149,8 +196,6 @@ public class SignupActivity extends AppCompatActivity {
                                         @Override
                                         public void onComplete(@NonNull Task<Void> task) {
                                             if(task.isSuccessful()){
-
-
                                                 Toast.makeText(SignupActivity.this, "아빠 안녕?", Toast.LENGTH_SHORT).show();
                                                 Intent intent = new Intent(SignupActivity.this, LoginActivity.class);
                                                 startActivity(intent);
@@ -189,7 +234,6 @@ public class SignupActivity extends AppCompatActivity {
         btnDad.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-
                 ifBtnFindChecked();
                 btnFind.setVisibility(View.VISIBLE);
                 momHeight.setVisibility(View.GONE);
@@ -197,11 +241,13 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
     }
-    public void ifBtnFindChecked() {
+    private void ifBtnFindChecked() {
         btnFind.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
+                btnFind.setVisibility(View.INVISIBLE);
                 findMomEmail.setVisibility(View.VISIBLE);
+                btnFindMom.setVisibility(View.VISIBLE);
             }
         });
     }
