@@ -1,8 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="50dp"
-    android:gravity="right"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="1dp"
+    android:layout_marginBottom="1dp"
     android:orientation="horizontal"
     android:background="@color/beige"
     android:paddingBottom="5dp"
@@ -19,8 +20,7 @@
         android:layout_marginEnd="10dp"
         android:background="@drawable/bg_bubble_gray"
         android:textColor="#FFFFFF"
-        android:textIsSelectable="true"
-        android:textSize="16sp" />
+        android:textIsSelectable="true" />
 
 
 </RelativeLayout>

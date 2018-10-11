@@ -44,8 +44,6 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static String LoverEmail;
-    public static String destinationUid;
     DatabaseHelper myDb;
     private TextView textName,textDdate, textToday;
     private ImageButton buttonSetting;
@@ -54,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private DatabaseReference mRootref;
     private String myEmail;
+    private static String LoverEmail;
+    public static String destinationUid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +61,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         define(); // define
+        checkUser(); // Send user to LoginActivity when not logged in
         updateDday(); // update today's d-day
         updateTodaydate(); // update today's date
         textBabyName(); // set text of 'BABY NAME'
+
 
         String userUID = mAuth.getCurrentUser().getUid();
         mRootref.child("Setting").child(userUID).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -129,10 +131,6 @@ public class MainActivity extends AppCompatActivity {
             }*/
 
 
-        if (mAuth.getCurrentUser() == null) {
-            startActivity(new Intent(MainActivity.this, LoginActivity.class));
-            finish();
-        }
 
         // click and action methods
         dodamClick();
@@ -141,6 +139,14 @@ public class MainActivity extends AppCompatActivity {
         settingClick();
         hospitalClick();
     }
+
+    private void checkUser(){
+        if (mAuth.getCurrentUser() == null) {
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+    }
+
     public static String getDestinationUid() {
         return destinationUid;
     }
