@@ -163,7 +163,7 @@ public class HospitalMainActivity extends AppCompatActivity implements LoaderMan
                 if (newUri == null) {
                     Toast.makeText(getApplicationContext(), "제목을 입력해주세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    //Toast.makeText(getApplicationContext(), "제목 입력이 완료되었습니다", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "제목 입력이 완료되었습니다", Toast.LENGTH_SHORT).show();
                 }
 
             }

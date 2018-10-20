@@ -50,7 +50,7 @@ public class AlarmCursorAdapter extends CursorAdapter {
         if (date != null){
             setReminderDateTime(date);
         }else{
-            mDateAndTimeText.setText("Date not set");
+            mDateAndTimeText.setText("날짜를 선택해주세요");
         }
 
 

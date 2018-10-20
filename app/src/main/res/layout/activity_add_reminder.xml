@@ -24,15 +24,24 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/toolbar"
         android:background="@color/colorPrimary"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
 
+        <ImageView
+            android:id="@+id/hospital_icon"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:src="@drawable/ic_local_hospital_white_24dp" />
+
         <EditText
+
             android:id="@+id/reminder_title"
             android:layout_width="match_parent"
             android:layout_height="55dp"
-            android:layout_marginLeft="72dp"
-            android:layout_marginRight="16dp"
             android:gravity="top|left"
             android:hint="@string/add_reminder"
             android:inputType="textCapWords|textMultiLine"
@@ -79,19 +88,21 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_toRightOf="@id/date_icon"
-                    android:orientation="vertical">
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/date_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/date"
+                        android:text="@string/dateString"
+                        android:layout_marginRight="40dp"
                         android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/set_date"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:hint="날짜를 선택해주세요"
                         android:textSize="15dp" />
 
                 </LinearLayout>
