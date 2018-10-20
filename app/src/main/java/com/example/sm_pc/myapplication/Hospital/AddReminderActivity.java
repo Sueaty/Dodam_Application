@@ -177,8 +177,6 @@ public class AddReminderActivity extends AppCompatActivity
         });
 
 
-
-
         // Setup Reminder Uterus EditText
         mUterusText.addTextChangedListener(new TextWatcher() {
 
@@ -367,7 +365,7 @@ public class AddReminderActivity extends AppCompatActivity
             // Respond to a click on the "Save" menu option
             case R.id.save_reminder:
                 if (mTitleText.getText().toString().length() == 0){
-                    mTitleText.setError("Reminder Title cannot be blank!");
+                    mTitleText.setError("제목을 입력해주세요");
                 }
                 else {
                     saveReminder();

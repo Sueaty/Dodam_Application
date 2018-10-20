@@ -137,7 +137,7 @@ public class HospitalMainActivity extends AppCompatActivity implements LoaderMan
     public void addReminderTitle(){
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Set Reminder Title");
+        builder.setTitle("제목을 입력해주세요");
 
         final EditText input = new EditText(this);
         input.setInputType(InputType.TYPE_CLASS_TEXT);
@@ -161,9 +161,9 @@ public class HospitalMainActivity extends AppCompatActivity implements LoaderMan
 
 
                 if (newUri == null) {
-                    Toast.makeText(getApplicationContext(), "Setting Reminder Title failed", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "제목을 입력해주세요", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getApplicationContext(), "Title set successfully", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "제목 입력이 완료되었습니다", Toast.LENGTH_SHORT).show();
                 }
 
             }
