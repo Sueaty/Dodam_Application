@@ -33,7 +33,11 @@ public class AlarmReminderContract {
         public static final String KEY_DATE = "date";
         public static final String KEY_TIME = "time";
         public static final String KEY_ACTIVE = "active";
-
+        public static final String KEY_WEIGHT = "weight";
+        public static final String KEY_UTERUS = "uterus";
+        public static final String KEY_CIRCUMFERENCE = "circumference";
+        public static final String KEY_BLOOD_PRESSURE_HIGH = "blood_pressure_high";
+        public static final String KEY_BLOOD_PRESSURE_LOW = "blood_pressure_low";
     }
 
     public static String getColumnString(Cursor cursor, String columnName) {

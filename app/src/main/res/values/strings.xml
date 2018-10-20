@@ -196,4 +196,11 @@
     <string name="alarm_intro">병원 방문 일정을 등록하고, 건강 상태를 기록하세요</string>
 
     <string name="weight">임산부 체중</string>
+
+    <string name="uterus">자궁저 높이</string>
+
+    <string name="circumference">복부 둘레</string>
+
+    <string name="blood_pressure">혈압</string>
+
 </resources>

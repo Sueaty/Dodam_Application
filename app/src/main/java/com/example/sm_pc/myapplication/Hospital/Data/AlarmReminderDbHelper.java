@@ -22,7 +22,12 @@ public class AlarmReminderDbHelper extends SQLiteOpenHelper {
                 + AlarmReminderContract.AlarmReminderEntry.KEY_TITLE + " TEXT, "
                 + AlarmReminderContract.AlarmReminderEntry.KEY_DATE + " TEXT, "
                 + AlarmReminderContract.AlarmReminderEntry.KEY_TIME + " TEXT, "
-                + AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE + " TEXT " + " );";
+                + AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE + " TEXT, "
+                + AlarmReminderContract.AlarmReminderEntry.KEY_WEIGHT + " TEXT ,"
+                + AlarmReminderContract.AlarmReminderEntry.KEY_UTERUS + " TEXT ,"
+                + AlarmReminderContract.AlarmReminderEntry.KEY_CIRCUMFERENCE + " TEXT ,"
+                + AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_HIGH + " TEXT ,"
+                + AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_LOW + " TEXT "+ " );";
 
         // Execute the SQL statement
         sqLiteDatabase.execSQL(SQL_CREATE_ALARM_TABLE);

@@ -40,7 +40,7 @@ public class AddReminderActivity extends AppCompatActivity
 
 
     private Toolbar mToolbar;
-    private EditText mTitleText;
+    private EditText mTitleText, mWeightText, mUterusText, mCircumferenceText, mBlood_pressure_highText, mBlood_pressure_lowText;
     private TextView mDateText, mTimeText, mRepeatText, mRepeatNoText, mRepeatTypeText;
     private FloatingActionButton mFAB1;
     private FloatingActionButton mFAB2;
@@ -55,6 +55,7 @@ public class AddReminderActivity extends AppCompatActivity
     private String mRepeatNo;
     private String mRepeatType;
     private String mActive;
+    private String mWeight, mUterus, mCircumference, mBlood_pressure_high, mBlood_pressure_low, mEdema, mProtein_urine, mUrine_glucose;
 
     private Uri mCurrentReminderUri;
     private boolean mVehicleHasChanged = false;
@@ -67,6 +68,12 @@ public class AddReminderActivity extends AppCompatActivity
     //private static final String KEY_REPEAT_NO = "repeat_no_key";
     //private static final String KEY_REPEAT_TYPE = "repeat_type_key";
     private static final String KEY_ACTIVE = "active_key";
+    private static final String KEY_WEIGHT = "weight_key";
+    private static final String KEY_UTERUS = "uterus_key";
+    private static final String KEY_CIRCUMFERENCE = "circumference_key";
+    private static final String KEY_BLOOD_PRESSURE_HIGH = "blood_pressure_high_key";
+    private static final String KEY_BLOOD_PRESSURE_LOW = "blood_pressure_low_key";
+
 
     private View.OnTouchListener mTouchListener = new View.OnTouchListener() {
         @Override
@@ -94,8 +101,6 @@ public class AddReminderActivity extends AppCompatActivity
         } else {
 
             setTitle(getString(R.string.editor_activity_title_edit_reminder));
-
-
             getLoaderManager().initLoader(EXISTING_VEHICLE_LOADER, null, this);
         }
 
@@ -104,6 +109,13 @@ public class AddReminderActivity extends AppCompatActivity
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
         mTitleText = (EditText) findViewById(R.id.reminder_title);
         mDateText = (TextView) findViewById(R.id.set_date);
+        mWeightText = (EditText) findViewById(R.id.set_weight);
+        mUterusText = (EditText) findViewById(R.id.set_uterus);
+        mCircumferenceText = (EditText) findViewById(R.id.set_circumference);
+        mBlood_pressure_highText = (EditText) findViewById(R.id.set_blood_pressure_high);
+        mBlood_pressure_lowText = (EditText) findViewById(R.id.set_blood_pressure_low);
+
+
        // mFAB1 = (FloatingActionButton) findViewById(R.id.starred1);
        // mFAB2 = (FloatingActionButton) findViewById(R.id.starred2);
 
@@ -111,8 +123,20 @@ public class AddReminderActivity extends AppCompatActivity
         mActive = "true";
         mRepeat = "true";
         mRepeatNo = Integer.toString(1);
-        mRepeatType = "Hour";
-        mTime="13:22";  //fixed time to send local notification
+
+        /*
+        mWeight="0";
+        mUterus="0";
+        mCircumference="0";
+        mBlood_pressure_high ="0";
+        mBlood_pressure_low="0";
+        mEdema="0";
+        mProtein_urine="0";
+        mUrine_glucose="0";
+        */
+
+        //mRepeatType = "Hour";
+        //mTime="13:22";  //fixed time to send local notification
 
         mCalendar = Calendar.getInstance();
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
@@ -121,7 +145,7 @@ public class AddReminderActivity extends AppCompatActivity
         mMonth = mCalendar.get(Calendar.MONTH) + 1;
         mDay = mCalendar.get(Calendar.DATE);
 
-        mDate = mDay + "/" + mMonth + "/" + mYear;
+        mDate = mYear + "년 " + mMonth + "월 " + mDay+"일";
         mTime = mHour + ":" + mMinute;
 
         // Setup Reminder Title EditText
@@ -139,6 +163,90 @@ public class AddReminderActivity extends AppCompatActivity
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+
+        // Setup Reminder Weight EditText
+        mWeightText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mWeight = s.toString().trim();
+                mWeightText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
+        // Setup Reminder Uterus EditText
+        mUterusText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mUterus = s.toString().trim();
+                mUterusText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Setup Reminder Circumference EditText
+        mCircumferenceText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mCircumference = s.toString().trim();
+                mCircumferenceText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Setup Reminder Blood_pressure(high) EditText
+        mBlood_pressure_highText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mBlood_pressure_high = s.toString().trim();
+                mBlood_pressure_highText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+        // Setup Reminder Blood_pressure(low) EditText
+        mBlood_pressure_lowText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mBlood_pressure_low = s.toString().trim();
+                mBlood_pressure_lowText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
 
         // Setup TextViews using reminder values
         mDateText.setText(mDate);
@@ -158,23 +266,33 @@ public class AddReminderActivity extends AppCompatActivity
             mDateText.setText(savedDate);
             mDate = savedDate;
 
+            String savedWeight = savedInstanceState.getString(KEY_WEIGHT);
+            mWeightText.setText(savedWeight);
+            mWeight = savedWeight;
+
+            String savedUterus = savedInstanceState.getString(KEY_UTERUS);
+            mUterusText.setText(savedUterus);
+            mUterus = savedUterus;
+
+            String savedCircumference = savedInstanceState.getString(KEY_CIRCUMFERENCE);
+            mCircumferenceText.setText(savedCircumference);
+            mCircumference = savedCircumference;
+
+            String savedBlood_pressure_high = savedInstanceState.getString(KEY_BLOOD_PRESSURE_HIGH);
+            mBlood_pressure_highText.setText(savedBlood_pressure_high);
+            mBlood_pressure_high = savedBlood_pressure_high;
+
+            String savedBlood_pressure_low = savedInstanceState.getString(KEY_BLOOD_PRESSURE_LOW);
+            mBlood_pressure_lowText.setText(savedBlood_pressure_low);
+            mBlood_pressure_low = savedBlood_pressure_low;
+
 
             mActive = savedInstanceState.getString(KEY_ACTIVE);
         }
-/*
-        // Setup up active buttons
-        if (mActive.equals("false")) {
-            mFAB1.setVisibility(View.VISIBLE);
-            mFAB2.setVisibility(View.GONE);
 
-        } else if (mActive.equals("true")) {
-            mFAB1.setVisibility(View.GONE);
-            mFAB2.setVisibility(View.VISIBLE);
-        }
-*/
         setSupportActionBar(mToolbar);
         getSupportActionBar().setTitle(R.string.title_activity_add_reminder);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         getSupportActionBar().setHomeButtonEnabled(false);
     }
 
@@ -186,6 +304,12 @@ public class AddReminderActivity extends AppCompatActivity
         outState.putCharSequence(KEY_TIME, mTimeText.getText());
         outState.putCharSequence(KEY_DATE, mDateText.getText());
         outState.putCharSequence(KEY_ACTIVE, mActive);
+        outState.putCharSequence(KEY_WEIGHT, mWeightText.getText());
+        outState.putCharSequence(KEY_UTERUS, mUterusText.getText());
+        outState.putCharSequence(KEY_CIRCUMFERENCE, mCircumferenceText.getText());
+        outState.putCharSequence(KEY_BLOOD_PRESSURE_HIGH, mBlood_pressure_highText.getText());
+        outState.putCharSequence(KEY_BLOOD_PRESSURE_LOW, mBlood_pressure_lowText.getText());
+
     }
 
     // On clicking Date picker
@@ -366,24 +490,26 @@ public class AddReminderActivity extends AppCompatActivity
             return;
         }
 
-
         ContentValues values = new ContentValues();
 
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE, mTitle);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_DATE, mDate);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_TIME, mTime);
         values.put(AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE, mActive);
-
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_WEIGHT, mWeight);
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_UTERUS, mUterus);
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_CIRCUMFERENCE, mCircumference);
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_HIGH, mBlood_pressure_high);
+        values.put(AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_LOW, mBlood_pressure_low);
         // Set up calender for creating the notification
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
         mCalendar.set(Calendar.HOUR_OF_DAY, 21);
-        mCalendar.set(Calendar.MINUTE, 38);
+        mCalendar.set(Calendar.MINUTE, 50);
         mCalendar.set(Calendar.SECOND, 0);
 
         long selectedTimestamp =  mCalendar.getTimeInMillis();
-
 
         if (mCurrentReminderUri == null) {
             // This is a NEW reminder, so insert a new reminder into the provider,
@@ -418,32 +544,18 @@ public class AddReminderActivity extends AppCompatActivity
 
         // Create a new notification
         if (mActive.equals("true")) {
-/*
-            if (mRepeat.equals("true")) {
-                new AlarmScheduler().setRepeatAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri, mRepeatTime);
-            } else if (mRepeat.equals("false")) {
-                new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
-            }
-*/
             new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
-            Toast.makeText(this, "Alarm time is " + selectedTimestamp,
-                    Toast.LENGTH_LONG).show();
         }
-
         // Create toast to confirm new reminder
         Toast.makeText(getApplicationContext(), "Saved",
                 Toast.LENGTH_SHORT).show();
-
     }
 
     // On pressing the back button
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-
     }
-
-
 
 
     @Override
@@ -453,8 +565,12 @@ public class AddReminderActivity extends AppCompatActivity
                 AlarmReminderContract.AlarmReminderEntry._ID,
                 AlarmReminderContract.AlarmReminderEntry.KEY_TITLE,
                 AlarmReminderContract.AlarmReminderEntry.KEY_DATE,
-                //      AlarmReminderContract.AlarmReminderEntry.KEY_TIME,
                 AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE,
+                AlarmReminderContract.AlarmReminderEntry.KEY_WEIGHT,
+                AlarmReminderContract.AlarmReminderEntry.KEY_UTERUS,
+                AlarmReminderContract.AlarmReminderEntry.KEY_CIRCUMFERENCE,
+                AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_HIGH,
+                AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_LOW,
         };
 
         // This loader will execute the ContentProvider's query method on a background thread
@@ -477,19 +593,32 @@ public class AddReminderActivity extends AppCompatActivity
         if (cursor.moveToFirst()) {
             int titleColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TITLE);
             int dateColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_DATE);
-            //int timeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_TIME);
             int activeColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_ACTIVE);
+            int weightColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_WEIGHT);
+            int uterusColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_UTERUS);
+            int circumferenceColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_CIRCUMFERENCE);
+            int blood_pressure_highColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_HIGH);
+            int blood_pressure_lowColumnIndex = cursor.getColumnIndex(AlarmReminderContract.AlarmReminderEntry.KEY_BLOOD_PRESSURE_LOW);
 
             // Extract out the value from the Cursor for the given column index
             String title = cursor.getString(titleColumnIndex);
             String date = cursor.getString(dateColumnIndex);
-            //String time = cursor.getString(timeColumnIndex);
             String active = cursor.getString(activeColumnIndex);
+            String weight = cursor.getString(weightColumnIndex);
+            String uterus = cursor.getString(uterusColumnIndex);
+            String circumference = cursor.getString(circumferenceColumnIndex);
+            String blood_pressure_high = cursor.getString(blood_pressure_highColumnIndex);
+            String blood_pressure_low = cursor.getString(blood_pressure_lowColumnIndex);
+
 
             // Update the views on the screen with the values from the database
             mTitleText.setText(title);
             mDateText.setText(date);
-            //    mTimeText.setText(time);
+            mWeightText.setText(weight);
+            mUterusText.setText(uterus);
+            mCircumferenceText.setText(circumference);
+            mBlood_pressure_highText.setText(blood_pressure_high);
+            mBlood_pressure_lowText.setText(blood_pressure_low);
         }
 
 

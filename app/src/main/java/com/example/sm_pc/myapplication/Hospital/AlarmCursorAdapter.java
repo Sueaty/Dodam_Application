@@ -48,8 +48,7 @@ public class AlarmCursorAdapter extends CursorAdapter {
         setReminderTitle(title);
 
         if (date != null){
-            String dateTime = date + " " + time;
-            setReminderDateTime(dateTime);
+            setReminderDateTime(date);
         }else{
             mDateAndTimeText.setText("Date not set");
         }
