@@ -14,6 +14,7 @@ public class AlarmScheduler {
                 ReminderAlarmService.getReminderPendingIntent(context, reminderTask);
 
 
+        //set alarm one day before
         if (Build.VERSION.SDK_INT >= 23) {
 
             manager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alarmTime-(86400000), operation);

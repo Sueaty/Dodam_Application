@@ -64,9 +64,6 @@ public class AddReminderActivity extends AppCompatActivity
     private static final String KEY_TITLE = "title_key";
     private static final String KEY_TIME = "time_key";
     private static final String KEY_DATE = "date_key";
-    //private static final String KEY_REPEAT = "repeat_key";
-    //private static final String KEY_REPEAT_NO = "repeat_no_key";
-    //private static final String KEY_REPEAT_TYPE = "repeat_type_key";
     private static final String KEY_ACTIVE = "active_key";
     private static final String KEY_WEIGHT = "weight_key";
     private static final String KEY_UTERUS = "uterus_key";
@@ -94,7 +91,6 @@ public class AddReminderActivity extends AppCompatActivity
         if (mCurrentReminderUri == null) {
 
             setTitle(getString(R.string.editor_activity_title_new_reminder));
-
             // Invalidate the options menu, so the "Delete" menu option can be hidden.
             // (It doesn't make sense to delete a reminder that hasn't been created yet.)
             invalidateOptionsMenu();
@@ -115,28 +111,11 @@ public class AddReminderActivity extends AppCompatActivity
         mBlood_pressure_highText = (EditText) findViewById(R.id.set_blood_pressure_high);
         mBlood_pressure_lowText = (EditText) findViewById(R.id.set_blood_pressure_low);
 
-
-       // mFAB1 = (FloatingActionButton) findViewById(R.id.starred1);
-       // mFAB2 = (FloatingActionButton) findViewById(R.id.starred2);
-
         // Initialize default values
         mActive = "true";
         mRepeat = "true";
         mRepeatNo = Integer.toString(1);
 
-        /*
-        mWeight="0";
-        mUterus="0";
-        mCircumference="0";
-        mBlood_pressure_high ="0";
-        mBlood_pressure_low="0";
-        mEdema="0";
-        mProtein_urine="0";
-        mUrine_glucose="0";
-        */
-
-        //mRepeatType = "Hour";
-        //mTime="13:22";  //fixed time to send local notification
 
         mCalendar = Calendar.getInstance();
         mHour = mCalendar.get(Calendar.HOUR_OF_DAY);
@@ -180,6 +159,24 @@ public class AddReminderActivity extends AppCompatActivity
             @Override
             public void afterTextChanged(Editable s) {}
         });
+
+        // Setup Reminder Weight EditText
+        mDateText.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                mDate = s.toString().trim();
+                mDateText.setError(null);
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
+
+
 
 
         // Setup Reminder Uterus EditText
@@ -505,8 +502,8 @@ public class AddReminderActivity extends AppCompatActivity
         mCalendar.set(Calendar.MONTH, --mMonth);
         mCalendar.set(Calendar.YEAR, mYear);
         mCalendar.set(Calendar.DAY_OF_MONTH, mDay);
-        mCalendar.set(Calendar.HOUR_OF_DAY, 21);
-        mCalendar.set(Calendar.MINUTE, 50);
+        mCalendar.set(Calendar.HOUR_OF_DAY, 11);
+        mCalendar.set(Calendar.MINUTE, 13);
         mCalendar.set(Calendar.SECOND, 0);
 
         long selectedTimestamp =  mCalendar.getTimeInMillis();
@@ -537,7 +534,7 @@ public class AddReminderActivity extends AppCompatActivity
                         Toast.LENGTH_SHORT).show();
             } else {
                 // Otherwise, the update was successful and we can display a toast.
-                Toast.makeText(getApplicationContext(), "Saved",
+                Toast.makeText(getApplicationContext(), "저장되었습니다",
                         Toast.LENGTH_SHORT).show();
             }
         }
@@ -547,7 +544,7 @@ public class AddReminderActivity extends AppCompatActivity
             new AlarmScheduler().setAlarm(getApplicationContext(), selectedTimestamp, mCurrentReminderUri);
         }
         // Create toast to confirm new reminder
-        Toast.makeText(getApplicationContext(), "Saved",
+        Toast.makeText(getApplicationContext(), "저장되었습니다",
                 Toast.LENGTH_SHORT).show();
     }
 
