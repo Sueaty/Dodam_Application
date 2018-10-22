@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCancelled(DatabaseError databaseError) {
             }
-
         });
 
         //LoverEmail = "mom@naver.com";
@@ -280,6 +279,7 @@ public class MainActivity extends AppCompatActivity {
         buttonDodam.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                // search
                 Intent intent = new Intent(MainActivity.this, BotActivity.class);
                 startActivity(intent);
             }

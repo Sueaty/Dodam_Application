@@ -48,7 +48,6 @@
             android:lines="4"
             android:minLines="4"
             android:scrollHorizontally="false"
-            android:textColor="#000000"
             android:textColorHint="@color/primary_text_disabled_material_dark"
             android:textSize="25sp" />
 
@@ -312,11 +311,11 @@
                         android:textSize="15dp" />
 
                     <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="10dp"
-                    android:text="/"
-                    android:textSize="15dp" />
+                        android:text="/"
+                        android:textSize="15dp" />
 
                     <EditText
                         android:id="@+id/set_blood_pressure_high"

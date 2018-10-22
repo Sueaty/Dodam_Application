@@ -24,7 +24,7 @@ import com.example.sm_pc.myapplication.setting.Baby.BabyCreateActivity;
 
 public class SettingActivity extends AppCompatActivity {
 
-    private Button buttonHome, buttonBaby, buttonSetting, buttonHow, buttonUser;
+    private Button buttonHome, buttonBaby, buttonSetting, buttonHow;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class SettingActivity extends AppCompatActivity {
         babyClick();
         settingClick();
         howClick();
-        userClick();
     }
 
     private void define(){
@@ -46,7 +45,6 @@ public class SettingActivity extends AppCompatActivity {
         buttonBaby = (Button) findViewById(R.id.buttonSettingBaby);
         buttonHow = (Button) findViewById(R.id.buttonHowTo);
         buttonSetting = (Button) findViewById(R.id.buttonSettingSetting);
-        buttonUser = (Button) findViewById(R.id.buttonSettingUserChange);
     }
 
     private void homeClick(){
@@ -96,20 +94,12 @@ public class SettingActivity extends AppCompatActivity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
                 builder.setCancelable(true); //cancel after use (don't know what it means...)
                 builder.setTitle("도담도담에 대하여");
-                String Message = "도담도담은~";
+                String Message = "도담도담은 똑똑한 DODAM을 통해 출산 및 육아에 관한 정확한 정보를 얻고, 귀여운 BABY와 일상적 대화를 나눌 수 있는 서비스입니다.\n" +
+                        "매일매일의 변화를 DIARY에 기록하고, HOSPITAL로 병원 방문 일정도 잊지마세요!\n" +
+                        "아 참, 방문 후에 신체 정보 기록하시는 것도 잊지마세요 ~";
                 builder.setMessage(Message);
                 builder.setPositiveButton("OK", null);
                 builder.show();
-            }
-        });
-    }
-
-    private void userClick(){
-        buttonUser.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, UserInfoActivity.class);
-                startActivity(intent);
             }
         });
     }

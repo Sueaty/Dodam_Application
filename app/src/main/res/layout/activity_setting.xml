@@ -29,7 +29,6 @@
         android:layout_height="420dp"
         android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        android:background="@drawable/setting_linearlayout_customize"
         android:gravity="center_horizontal"
         android:paddingTop="50dp"
         android:orientation="vertical"
@@ -79,17 +78,6 @@
             android:layout_margin="7dp"
             android:background="@drawable/setting_button_customize"
             android:text="사용 방법"
-            android:textColor="@color/purple"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/buttonSettingUserChange"
-            android:layout_width="250dp"
-            android:layout_height="wrap_content"
-            android:layout_margin="7dp"
-            android:background="@drawable/setting_button_customize"
-            android:text="사용자 설정"
             android:textColor="@color/purple"
             android:textSize="20sp"
             android:textStyle="bold" />

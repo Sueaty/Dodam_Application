@@ -11,7 +11,7 @@
         android:id="@+id/diary_add_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:background="@color/orange"
+        android:background="@color/beige"
         android:elevation="4dp"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
@@ -47,7 +47,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/create_btn"
             android:text="Create Note"
-            android:textColor="@android:color/white" />
+            android:textColor="@color/purple" />
 
     </LinearLayout>
 
