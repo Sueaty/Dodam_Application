@@ -17,10 +17,9 @@
         android:gravity="center_vertical"
         android:layout_marginTop="5dp"
         android:layout_alignParentEnd="true"
-        android:layout_marginEnd="10dp"
+        android:layout_marginStart="50dp"
+        android:layout_marginEnd="5dp"
         android:background="@drawable/bg_bubble_gray"
         android:textColor="#FFFFFF"
         android:textIsSelectable="true" />
-
-
 </RelativeLayout>
