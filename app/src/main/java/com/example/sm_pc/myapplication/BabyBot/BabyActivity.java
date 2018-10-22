@@ -1,5 +1,6 @@
 package com.example.sm_pc.myapplication.BabyBot;
 
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -12,11 +13,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.sm_pc.myapplication.MainActivity;
 import com.example.sm_pc.myapplication.R;
 import com.example.sm_pc.myapplication.model.ChatModel;
+import com.example.sm_pc.myapplication.setting.Baby.DatabaseHelper;
 import com.ibm.watson.developer_cloud.conversation.v1.ConversationService;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageRequest;
 import com.ibm.watson.developer_cloud.conversation.v1.model.MessageResponse;
@@ -39,8 +43,11 @@ import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -62,6 +69,7 @@ public class BabyActivity extends AppCompatActivity {
     private Map<String,Object> context = new HashMap<>();
     int dDay = 1;
     int NUM = 0;
+    DatabaseHelper myDb;
 
     //수정한 부분
     private Map<String,UserModel> users = new HashMap<>();
@@ -70,6 +78,8 @@ public class BabyActivity extends AppCompatActivity {
     public static String destinationUid;
     private String babyUid;
     String inputmessage;
+    private TextView textDdate;
+    private ImageView babyPic;
 
     public static String chatRoomUid;
     //public static String RoomUid = "";
@@ -95,6 +105,7 @@ public class BabyActivity extends AppCompatActivity {
         inputMessage = (EditText) findViewById(R.id.message);
         //EditText 에 사용자가 입력한 메시지를 받아와서 inputMessage 에 저장!!!!!!
         btnSend = (ImageButton) findViewById(R.id.btn_send);
+        myDb = new DatabaseHelper(this);
 
 
         recyclerView = (RecyclerView) findViewById(R.id.recycler_view);
@@ -214,6 +225,8 @@ public class BabyActivity extends AppCompatActivity {
     private void sendMessage() {
         inputmessage = this.inputMessage.getText().toString().trim();
         //Message inputMessage = new Message();
+
+        dDay = updateDday();
 
         //수정한 부분
         ChatModel.Comment inputComment = new ChatModel.Comment();
@@ -387,11 +400,13 @@ public class BabyActivity extends AppCompatActivity {
 
         BabyGrowthList[39][0] = "전 모든 준비를 마치고 엄마아빠를 보러 곧 밖으로 나갈 준비를 하고있어요^0^";
         BabyGrowthList[39][1] = "저는 태어나면 바로 폐로 호흡하고, 울음소리로 저의 의사를 전달할거에용ㅎㅎㅎ";
-        BabyGrowthList[39][2] = "약 5%정도의 아기만이 출산예정일을 지킨다고 하니, 예정일이 지났다고 해도 너무 걱정하시지 마세요!><";
+        BabyGrowthList[39][2] = "전 곧 나갈거에요! 그렇지만 약 5%정도의 아기만이 출산예정일을 지킨다고 하니, 예정일이 지났다고 해도 너무 걱정하시지 마세요!><";
 
         //수정한 부분3
         ChatModel chatModel = new ChatModel();
         chatModel.users.put(uid, true);
+
+
 
 
         Thread thread = new Thread(new Runnable(){
@@ -448,7 +463,7 @@ public class BabyActivity extends AppCompatActivity {
                                 }
 
                                 //수정한 부분5
-                                String babyGrowthMessage = BabyGrowthList[dDay-1][num()];
+                                String babyGrowthMessage = BabyGrowthList[dDay][num()];
                                 comment.message = babyGrowthMessage;
                                 FirebaseDatabase.getInstance().getReference().child("babyTalk").child(chatRoomUid).child("comments").push().setValue(comment);    //제대로 된 답변
 
@@ -489,6 +504,42 @@ public class BabyActivity extends AppCompatActivity {
         thread.start();
 
     }
+    private int updateDday(){
+        String getExpectDate ="";
+        String getCompareDate = "";
+        String getDDay = "";
+        int dDay2 = 0;
+        Cursor res = myDb.getAllData();
+        if(res.getCount() == 0){
+
+        } else{
+            if(res.moveToFirst()){
+                do{
+                    getExpectDate = res.getString(1);
+                    getCompareDate = res.getString(2);
+                    getDDay = res.getString(4);
+                } while(res.moveToNext());
+            }
+            // get today
+            GregorianCalendar calendar = new GregorianCalendar();
+            int year = calendar.get(Calendar.YEAR);
+            int month = calendar.get(Calendar.MONTH);
+            int day = calendar.get(Calendar.DAY_OF_MONTH);
+            String todayDate = String.format(Locale.getDefault(), "%d%d%d", year, month, day);
+
+            dDay2 = Integer.parseInt(getDDay);
+            if (!getCompareDate.equals(todayDate)) {
+                --dDay2; // if compare date and today date is different, it means one day has passed, so tick off one day
+                boolean isUpdatd = myDb.updateData("1", getExpectDate, todayDate, todayDate, String.valueOf(dDay2)); // and update the baby_table
+            }
+        }
+
+        dDay2 = (280 - dDay2) / 7;
+
+
+        return dDay2;
+    }
+
 
     private boolean checkInternetConnection(){
         // get Connectivity Manager object to check connection
